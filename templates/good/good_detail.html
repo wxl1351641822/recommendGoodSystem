@@ -1,0 +1,177 @@
+{#{% extends './good_exlayout.html' %}#}
+{% extends '../layout.html' %}
+{% block css %}
+    <link href="/static/css/good_index.css" rel="stylesheet" type="text/css">
+    <style>
+    .good{
+        padding-top:20px;
+        padding-left:20px;
+    }
+    .good-left{
+        padding-left:20px;
+        width:400px;
+    }
+    .good-right{
+        padding-left:20px;
+        width:900px;
+    }
+    .good-right .price{
+        color:red;
+    }
+
+    .parameter2 li{
+        float:left;
+        list-style:none;
+        width:260px;
+        }
+    .p-parameter{
+        height:250px;
+    }
+    .avatar{
+        width:30px;
+        height:30px;
+        border-radius: 50%;
+    }
+    .comment-list{
+        border-bottom:1px solid #dddddd;
+        margin-top:20px;
+        list-style-type:none;
+    }
+    #J-detail-content{
+        margin-left:50px;
+    }
+    #myTab{
+        padding-left:20px;
+        padding-top:20px;
+        width:100%;
+    }
+    #detail{
+        padding-top:20px;
+    }
+    .choose .dd{
+        display:flex;
+    }
+    .choose .dd .item{
+        margin-left:10px;
+    }
+
+    </style>
+
+
+{% endblock %}
+{% block menus %}
+    {% include './good_exlayout.html' %}
+{% endblock %}
+{% block content %}
+{#    {% include '../navbar_content.html' %}#}
+{##}
+{#    {% include '../goodlist.html' %}#}
+    <div class="good row">
+        <div class="good-left">
+            <img src="{{ good_detail.0.img_url }}">
+        </div>
+        <div class=" good-right flex-column">
+            <div class="">
+                <h5><a href="{{ goodlist.0.url }}">{{ goodlist.0.title }}</a></h5>
+            </div>
+            <div class="priceandbtn row" >
+                <h5 class="price col-6">￥{{ goodlist.0.price }}</h5>
+                <div class="btn-group col-6" role="group" aria-label="Basic example">
+                              {% if login_flag == 0 %}
+                                    <a  class="btn btn-light col-2" href="/collect/?goodid={{ goodlist.0.id }}&del=0&goto=good_detail"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ goodlist.0.collect_num }}</a>
+                              {% else %}
+                                  {% if login_flag != -1 %}
+                                      <a  class="btn btn-light col-2" href="/collect/?goodid={{ goodlist.0.id }}&del=1&goto=good_detail"><img class="icon" src="/static/img/shoucang_1.png" >&ensp;{{ goodlist.0.collect_num }}</a>
+                                  {% else %}
+                                      <a  class="btn btn-light col-2" href="/collect/?goodid={{ goodlist.0.id }}&del=0&goto=good_detail"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ goodlist.0.collect_num }}</a>
+                                  {% endif %}
+                              {% endif %}
+                              <a  class="btn btn-light col-2"><img class="icon" src="/static/img/pinglun.png" >&ensp;{{ goodlist.0.comment_num }}</a>
+                              <a  class="btn btn-light col-2"><img class="icon" src="/static/img/dianji.png" >&ensp;{{ goodlist.0.click_num }}</a>
+            </div>
+            </div>
+
+            <div class="choose">
+                    {% autoescape off %}
+                        {{ good_detail.0.choose }}
+                    {% endautoescape %}
+
+
+            </div>
+
+        </div>
+
+    </div>
+    <br/>
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="nav-link active" id="tab-detail"  >
+            <a href="#detail" data-toggle="tab" id="a-detail">
+                 商品详情
+            </a>
+        </li>
+        <li class="nav-link"  id="tab-comment"  ><a href="#comment" data-toggle="tab" id="a-comment">商品评论</a></li>
+
+    </ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade" id="comment">
+        <ul>
+            <li class="comment-list">
+                <div class="form-group">
+                  <label for="comment">评论:</label>
+                  <textarea class="form-control" rows="5" id="comment"></textarea>
+                </div>
+            </li>
+            {% for comment in good_comments %}
+                <li class="comment-list">
+                    <img class="avatar" src="{{ comment.avatarurl }}">
+                    <text>&emsp;{{ comment.name }}</text>
+                    <p>{{ comment.comments }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+	<div class="tab-pane fade in active show" id="detail">
+		{% autoescape off %}
+            <div class="p-parameter">{{ good_detail.0.detail }}</div>
+            <br>
+            <p>{{ good_detail.0.detail_pic }}</p>
+        {% endautoescape %}
+    </div>
+
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+{#    <script src="/static/js/goodjs.js"></script>#}
+    <script>
+{#    tab的响应#}
+
+        $('#myTab li a').click(function (e) {
+            {#e.preventDefault();#}
+            {#console.log(this.href)#}
+            $(this).tab('show');
+
+            if(this.id=="a-comment"){
+                {#console.log(this.id)#}
+                document.getElementById('tab-detail').classList.remove('active')
+                document.getElementById('tab-comment').classList.add('active')
+            }else if(this.id=="a-detail"){
+                {#console.log(this.id)#}
+                document.getElementById('tab-comment').classList.remove('active')
+                document.getElementById('tab-detail').classList.add('active')
+            }
+
+        })
+
+        {#$(function () {#}
+		{#    $('#myTab li:eq(0) a').tab('show');#}
+        {##}
+
+
+
+    </script>
+{% endblock %}

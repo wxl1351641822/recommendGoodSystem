@@ -1,0 +1,203 @@
+{% extends '../layout.html' %}
+{% block css %}
+    <link href="/static/css/good_index.css" rel="stylesheet">
+{#    <link href="/static/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">#}
+
+{% endblock %}
+{% block menus %}
+    {% include './user_exlayout.html' %}
+{% endblock %}
+{% block content %}
+
+{#    表单#}
+    <form class="container "  id="form" style="margin-top:50px;" method="POST" >
+      <div class="form-group form-inline">
+        <label for="inputUsername">用户名</label>
+        <input type="text" id="inputUsername"  name="name"  class="form-control mx-sm-3" aria-describedby="name_msg" value="{{ user.name }}">
+        <small id="name_msg" class="red" style="color:red;">
+
+        </small>
+      </div>
+
+      <div class="form-group form-inline">
+        <label for="inputPassword">&emsp;密码</label>
+        <input type="password" id="inputPassword"  name="password"  class="form-control mx-sm-3" aria-describedby="password_msg" value="{{ user.password }}">
+        <small id="password_msg" style="color:red;">
+
+        </small>
+      </div>
+        <div class="form-group form-inline">
+            <label for="nputPhone">&emsp;电话</label>
+            <input type="text" id="inputPhone" name="phone"  class="form-control mx-sm-3" aria-describedby="phone_msg" value="{{ user.phone }}">
+            <small id="phone_msg" style="color:red;">
+
+            </small>
+          </div>
+        <div class="form-group form-inline">
+            <label for="nputaddr">&emsp;地址</label>
+            <input type="text" id="inputaddr" name="addr"  class="form-control mx-sm-3" aria-describedby="addr_msg" value="{{ user.phone }}">
+            <small id="addr_msg" style="color:red;">
+
+            </small>
+          </div>
+        <div class="form-group form-inline">
+            <label for="inputDate">&emsp;生日</label>
+            <input type="text" id="inputDate"  name="date" class="form-control mx-sm-3" aria-describedby="date_msg" value="{{ user.age| date:"Y-m-d" }}">
+            <small id="date_msg" style="color:red;">
+
+            </small>
+          </div>
+      <fieldset class="form-group">
+        <div class="row">
+          <legend class="col-form-label col-sm-1 pt-0">&emsp;性别</legend>
+          <div class="col-sm-10 row">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="sex" id="gridRadios1" value="男" checked {% if user.sex == '男' %}checked{% endif %}>
+              <label class="form-check-label" for="gridRadios1">
+                男&emsp;&emsp;
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="sex" id="gridRadios2" value="女" {% if user.sex == '女' %}checked{% endif %}>
+              <label class="form-check-label" for="gridRadios2">
+                女
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+        <img src="{{ user.avatarurl }}" alt="图片" class="img-rounded " id="avatarUrl" style="width:200px;">
+    <input type="file" name="imageFile" id="imageFile" onchange="fileSelected()" />
+    <form id="uploadForm" enctype="multipart/form-data" method="post" action="/update_img/">
+         <input hidden="hidden" name="param" value="test" />
+    </form>
+
+      <div class="form-group form-inline">
+
+          <button type="submit" class="btn btn-primary" onclick="update();" id="update1" style="margin-left:135px;margin-top:20px;">修改</button>
+
+      </div>
+    </form>
+
+{% endblock %}
+
+{% block js %}
+    <script src="/static/layDate-v5.0.9/laydate/laydate.js"></script> <!-- 改成你的路径 -->
+    <script src="/static/bs-custom-file-input-master/dist/bs-custom-file-input.js"></script>
+    <script>
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#inputDate' //指定元素
+        });
+{#    加载中给收藏加上active #}
+        document.getElementById('user_personal').classList.add('active');
+        document.getElementById('index_recommend').classList.remove('active');
+        document.getElementById('user_collectlist').classList.remove('active')
+        document.getElementById("form").style.marginLeft=(document.body.clientWidth)/2-300+"px";
+        document.getElementById("update1").style.marginLeft=(document.body.clientWidth)/2-200+"px";
+        function update(){
+            var form=$('form').serializeArray();
+
+            var flag=0;
+            if(!form[0].value){
+
+                document.getElementById("name_msg").innerHTML='用户名不能为空';
+                flag=1;
+            }
+            if(form[1].value.length<6){
+                document.getElementById("password_msg").innerHTML='密码应大于六位';
+                flag=1;
+            }
+            if(form[2].value.length!=11){
+                document.getElementById("phone_msg").innerHTML='请输入电话号码！';
+                flag=1;
+            }
+            console.log(form[2].value.length)
+            if(flag==1)return;
+            console.log($('form').serialize())
+            $.ajax({
+                    url:"/update_user/",
+                    type:"POST",
+                    data:form,
+                    success:function(arg){
+                        alert("成功")
+
+                    }
+
+                })
+        };
+        var iMaxFilesize = 2097152; //2M
+
+        window.fileSelected = function() {
+           var file = document.getElementById('imageFile').files[0];
+           console.log(file)
+            {#var file = this.files[0];#}
+            var rFilter = /^(image\/bmp|image\/gif|image\/jpeg|image\/png|image\/tiff)$/i;
+            if(!rFilter.test(file.type)) {
+                alert("文件格式必须为图片");
+                return;
+            }
+            /*开始进行网络加载*/
+
+            var reader = new FileReader() , image = new Image() ,
+                canvas = document.createElement("canvas") , ctx = canvas.getContext("2d");
+            reader.onload = function() {        //文件加载完成
+                var url = reader.result;
+                image.src = url;
+            };
+            image.onload = function() {        //图片加载完成
+                var w = image.naturalWidth , h = image.naturalHeight ,
+                    scale = 3;        //图片缩放比例，这里是把图片大小高宽均缩小3倍
+                canvas.width = w / scale;
+                canvas.height = h / scale;
+                ctx.drawImage(image, 0 , 0 , w , h ,
+                    0 , 0 , canvas.width , canvas.height);
+                fileUpload();
+            };
+            reader.readAsDataURL(file);        //用文件加载器加载文件
+            function fileUpload() {        //文件上传方法
+                var quality = 0.3;        //图片的质量，这里设置的是0.3
+                var data = canvas.toDataURL("image/jpeg", quality);//获取画布图片，并且要jpg格式
+                data = data.split(',')[1];
+                data = window.atob(data);
+                var ia = new Uint8Array(data.length);
+                for(var i = 0; i < data.length; i++) {
+                    ia[i] = data.charCodeAt(i);
+                }
+                var blob = new Blob([ia], {            //以上均为二进制参数处理，从而获取一个blob对象
+                    type: "image/jpeg"
+                });
+                var fd = new FormData(document.getElementById("uploadForm"));
+                fd.append("upload.jpg"  , blob ,file.name );    //向form中加入图片数据，name属性是XXX，文件名是upload.jpg
+                var xhr = new XMLHttpRequest();
+                xhr.addEventListener('load', function(resUpload) {
+
+                    //请求成功
+                    {#alert('1')#}
+                    console.log(resUpload)
+                    document.getElementById('avatarUrl').src='/static/img/user/'+file.name;
+                    console.log(document.getElementById('avatarUrl').src)
+                }, false);
+                xhr.addEventListener('error', function(){
+
+                    //请求失败
+                    alert('2')
+                }, false);
+                xhr.addEventListener('abort', function(){
+
+                    //上传终止
+                    alert('3')
+                }, false);
+                xhr.open('POST', "/update_img/");//请求地址
+                {##}
+
+                xhr.send(fd);//发送
+                {#xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");#}
+                {#xhr.send("filename="+file.name);#}
+            }
+        };
+
+
+    </script>
+{% endblock %}

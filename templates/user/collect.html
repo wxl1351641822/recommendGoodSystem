@@ -1,0 +1,81 @@
+{% extends '../layout.html' %}
+
+{% block menus %}
+    {% include './user_exlayout.html' %}
+{% endblock %}
+
+{% block content %}
+    {% include '../navbar_content.html' %}
+    {% include '../goodlist.html' %}
+{% endblock %}
+
+{% block js %}
+    <script >
+{#    加载中给收藏加上active #}
+        document.getElementById('user_personal').classList.remove('active');
+        document.getElementById('index_recommend').classList.remove('active');
+        document.getElementById('user_collectlist').classList.add('active');
+
+    </script>
+{% endblock %}
+
+{#{% block goodcss %}#}
+{#    <link href="/static/css/good_index.css" rel="stylesheet">#}
+{#{% endblock %}#}
+{#{% block content_index %}#}
+{#    <div >#}
+{#        <div class="row">#}
+{#            {% for good in goodlist %}#}
+{#                <div class="col-sm-3" onclick="gotodetail('{{ good.url }}')" id="{{ good.id }}">#}
+{#                    <div class="card" style="width: 18rem;">#}
+{#                      <img class="card-img-top" src="{{ good.img_url }}" alt="Card image cap">#}
+{#                      <div class="card-body">#}
+{#                        <h5 class="card-title"><text style="color:red">￥{{ good.price }}</text></h5>#}
+{#                        <p class="card-text">{{ good.title|striptags|slice:"50"}}……</p>#}
+{##}
+{#                          <div class="btn-group col-12" role="group" aria-label="Basic example">#}
+{#                              <a  class="btn btn-light col-4" href="/collect/?goodid={{ good.id }}&del=1"><img class="icon" src="/static/img/shoucang_1.png" >&ensp;{{ good.collect_num }}</a>#}
+{#                              <a  class="btn btn-light col-4"><img class="icon" src="/static/img/pinglun.png" >&ensp;{{ good.comment_num }}</a>#}
+{#                              <a  class="btn btn-light col-4"><img class="icon" src="/static/img/dianji.png" >&ensp;{{ good.click_num }}</a>#}
+{#                          </div>#}
+{#                      </div>#}
+{#                    </div>#}
+{##}
+{#                </div>#}
+{#            {% endfor %}#}
+{##}
+{#        </div>#}
+{#        <nav class="navbar navbar-expand-lg navbar-light bg-light">#}
+{#             <ul class="pagination"  style="margin:0 auto;">#}
+{#                    {% if 1 == page %}#}
+{#                         <li class="page-item disabled"><a class="page-link" href="#">上一页</a></li>#}
+{#                     {% else %}#}
+{#                         <li class="page-item"><a class="page-link" href="/index/?page={{ page|add:-1 }}&max_page={{ max_page }}">上一页</a></li>#}
+{#                     {% endif %}#}
+{##}
+{#                 {% for i in count_lis %}#}
+{#                     {% if i == page %}#}
+{#                         <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>#}
+{#                     {% else %}#}
+{#                         <li class="page-item"><a class="page-link" href="/index/?page={{ i }}&max_page={{ max_page }}">{{ i }}</a></li>#}
+{#                     {% endif %}#}
+{##}
+{##}
+{#                 {% endfor %}#}
+{#             {% if page == max_page %}#}
+{#                 <li class="page-item disabled"><a class="page-link" href="#">下一页</a></li>#}
+{#             {% else %}#}
+{#                    <li class="page-item"><a class="page-link" href="/index/?page={{ page|add:+1 }}&max_page={{ max_page }}">下一页</a></li>#}
+{#             {% endif %}#}
+{##}
+{#            </ul>#}
+{#        </nav>#}
+{##}
+{##}
+{#    </div>#}
+{#{% endblock %}#}
+
+
+{#{% block goodjs %}#}
+{##}
+{#{% endblock %}#}

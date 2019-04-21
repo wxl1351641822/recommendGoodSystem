@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>商品评荐系统</title>
+
+    <!-- Bootstrap -->
+    <link href="/static/bootstrap-4.0.0-dist/css/bootstrap.css" rel="stylesheet">
+       <!-- 自己写的-->
+      <link href="/static/css/layout.css" rel="stylesheet">
+
+     {% block css %}
+
+    {% endblock %}
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+    <div class="pg-header">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark z-1000">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="/index/">商品评荐系统</a>
+
+          <div class="collapse navbar-collapse z-1000" id="navbarTogglerDemo02">
+              <!--未登录时的-->
+           <ul class="navbar-nav mr-auto mt-2 mt-lg-0" id="unlogin">
+                      <li class="nav-item">
+                          <div class="form-inline"  >
+                            <label for="username" style="color:white">用户名：</label>
+                            <input type="text" class="form-control" id="username" placeholder="Enter username">
+                            <label for="pwd"  style="color:white">&ensp;密码：</label>
+                            <input type="password" class="form-control" id="pwd" placeholder="Enter password">&ensp;
+                            <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox"><text style="color:white">记住密码</text>
+                              </label>
+                            </div>
+                            &ensp;<button type="submit" class="btn btn-outline-success my-2 my-sm-0" onclick="ajax_login()">登录</button>
+                              &ensp;<button  type="submit" class="btn btn-outline-success my-2 my-sm-0" onclick="ajax_register()">注册</button>
+                          </div>
+
+                      </li>
+                        <li class="nav-item">
+
+                        </li>
+                        <li>
+                            <label id="msg" style="color:red" class="nav-link">{{ msg }}</label>
+                        </li>
+
+           </ul>
+              <ul class="navbar-nav mr-auto mt-2 mt-lg-0 hide" id="login">
+                  <li class="nav-item active" id="index_recommend">
+                    <a class="nav-link" href="#">推荐 <span class="sr-only"></span></a>
+                  </li>
+                  <li class="nav-item" id="user_personal">
+                    <a class="nav-link" href="/user_personal/">个人</a>
+                  </li>
+                    <li class="nav-item" id="user_collectlist">
+                        <a class="nav-link" href="/user_collectlist/">收藏</a>
+                    </li>
+                  <li class="nav-item" id="user_logout">
+                        <a class="nav-link" onclick="ajax_logout()">注销</a>
+                    </li>
+
+                </ul>
+              {% if login_flag == 0 %}
+                   <script>
+
+                   </script>
+              {% else %}
+            <!--登录时的-->
+                  <script>
+                        document.getElementById('login').classList.remove('hide');
+                        document.getElementById('unlogin').classList.add('hide');
+                  </script>
+              {% endif %}
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+            </form>
+          </div>
+       </nav>
+    </div>
+       <div class="pg-content" >
+
+        <div class="menus" >
+            {% block menus %}
+
+            {% endblock %}
+
+        </div>
+        <div class="content" id="content">
+          {% block content %}
+
+          {% endblock %}
+        </div>
+{#        <div class="right" >#}
+{#           {% block right %}#}
+{##}
+{#           {% endblock %}#}
+{#        </div>#}
+
+    </div>
+
+
+
+{#    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>#}
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="/static/bootstrap-4.0.0-dist/js/bootstrap.js"></script>
+    <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+{#    #}
+    <script   type="text/javascript" src="/static/js/layout.js">
+
+    </script>
+    <script>
+         if(document.body.clientWidth>990){
+             document.getElementById("content").style.width=(document.body.clientWidth-200)+"px";
+         }
+
+        window.onresize = function(){
+
+            if(document.body.clientWidth>990){
+                document.getElementById("content").style.width=(document.body.clientWidth-200)+"px";
+
+             }else{
+                    document.getElementById("content").style.width=(document.body.clientWidth)+"px";
+                }
+
+                {#alert(document.body.clientWidth,document.getElementById("content").style.width)#}
+        }
+        function ajax_login(){
+            // alert('ajax')
+            username=$('#username').val()
+            pwd=$('#pwd').val()
+            if(username!=''){
+                    $.ajax({
+                    url:'/login/',
+                    type:'POST',
+                    data:{
+                        'username':username,
+                        'pwd':pwd
+                    },
+                    success:function(data){
+                        //当服务端处理完了，返回后，此函数自动调用
+                        //data为服务端返回的值。
+                        console.log(data);//data=ok或者error
+                        data=JSON.parse(data)
+                        console.log(data)
+                        if(data.error == 0){
+                            // alert('添加成功');
+                            document.getElementById('login').classList.remove('hide');
+                            document.getElementById('unlogin').classList.add('hide');
+                            location.reload();//表示要跳转的地址
+
+                        }else{
+                            // alert(data);
+                            $('#msg').text(data.data);
+                        }
+                    },
+                    failure:function(){
+                        $('#msg').text('网络忙');
+                    }
+                })
+            }else{
+                $('#msg').text('用户名不能为空！')
+            }
+
+    };
+        function ajax_logout(){
+            $.ajax({
+                    url:'/logout/',
+                    type:'POST',
+                    data:{
+
+                    },
+                    success:function(data){
+                        //当服务端处理完了，返回后，此函数自动调用
+                        //data为服务端返回的值。
+                            document.getElementById('unlogin').classList.remove('hide');
+                            document.getElementById('login').classList.add('hide');
+                            // location.href="/classes";//表示要跳转的地址
+                            location.reload();
+                    },
+                    failure:function(){
+                        $('#msg').text('网络忙');
+                    }
+                })
+        }
+        function ajax_register(){
+            alert('register')
+            username=$('#username').val()
+            pwd=$('#pwd').val()
+            if(username!=''){
+                $.ajax({
+                        url:'/register/',
+                        type:'POST',
+                        data:{
+                            'username':username,
+                            'pwd':pwd
+                        },
+                        success:function(data){
+                            //当服务端处理完了，返回后，此函数自动调用
+                            //data为服务端返回的值。
+                            console.log(data);//data=ok或者error
+                            data=JSON.parse(data)
+                            console.log(data)
+                            if(data.error == 0){
+                                // alert('添加成功');
+                                document.getElementById('login').classList.remove('hide');
+                                document.getElementById('unlogin').classList.add('hide');
+                                // location.href="/classes";//表示要跳转的地址
+                                location.reload();
+
+                            }else{
+                                // alert(data);
+                                $('#msg').text(data.data);
+                            }
+                        },
+                    failure:function(){
+                        $('#msg').text('网络忙');
+                    }
+                    })
+            }else{
+                $('#msg').text('用户名不能为空！')
+            }
+        }
+
+    </script>
+    {% block js %}
+
+    {% endblock %}
+
+</body>
+</html>

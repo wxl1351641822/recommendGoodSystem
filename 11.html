@@ -1,0 +1,584 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>商品评荐系统</title>
+
+    <!-- Bootstrap -->
+    <link href="/static/bootstrap-4.0.0-dist/css/bootstrap.css" rel="stylesheet">
+       <!-- 自己写的-->
+      <link href="/static/css/layout.css" rel="stylesheet">
+
+     
+    <link href="/static/css/good_index.css" rel="stylesheet" type="text/css">
+    <style>
+    .good{
+        padding-top:20px;
+        padding-left:20px;
+    }
+    .good-left{
+        padding-left:20px;
+        width:400px;
+    }
+    .good-right{
+        padding-left:20px;
+        width:900px;
+    }
+    .good-right .price{
+        color:red;
+    }
+
+    .parameter2 li{
+        float:left;
+        list-style:none;
+        width:260px;
+        }
+    .p-parameter{
+        height:250px;
+    }
+    .avatar{
+        width:30px;
+        height:30px;
+        border-radius: 50%;
+    }
+    .comment-list{
+        border-bottom:1px solid #dddddd;
+        margin-top:20px;
+        list-style-type:none;
+    }
+    #J-detail-content{
+        margin-left:50px;
+    }
+    #myTab{
+        padding-left:20px;
+        padding-top:20px;
+        width:100%;
+    }
+    #detail{
+        padding-top:20px;
+    }
+    .choose .dd{
+        display:flex;
+    }
+    .choose .dd .item{
+        margin-left:10px;
+    }
+
+    </style>
+
+
+
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+    <div class="pg-header">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark z-1000">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="/index/">商品评荐系统</a>
+
+          <div class="collapse navbar-collapse z-1000" id="navbarTogglerDemo02">
+              <!--未登录时的-->
+           <ul class="navbar-nav mr-auto mt-2 mt-lg-0" id="unlogin">
+                      <li class="nav-item">
+                          <div class="form-inline"  >
+                            <label for="username" style="color:white">用户名：</label>
+                            <input type="text" class="form-control" id="username" placeholder="Enter username">
+                            <label for="pwd"  style="color:white">&ensp;密码：</label>
+                            <input type="password" class="form-control" id="pwd" placeholder="Enter password">&ensp;
+                            <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox"><text style="color:white">记住密码</text>
+                              </label>
+                            </div>
+                            &ensp;<button type="submit" class="btn btn-outline-success my-2 my-sm-0" onclick="ajax_login()">登录</button>
+                              &ensp;<button  type="submit" class="btn btn-outline-success my-2 my-sm-0" onclick="ajax_register()">注册</button>
+                          </div>
+
+                      </li>
+                        <li class="nav-item">
+
+                        </li>
+                        <li>
+                            <label id="msg" style="color:red" class="nav-link"></label>
+                        </li>
+
+           </ul>
+              <ul class="navbar-nav mr-auto mt-2 mt-lg-0 hide" id="login">
+                  <li class="nav-item active" id="index_recommend">
+                    <a class="nav-link" href="#">推荐 <span class="sr-only"></span></a>
+                  </li>
+                  <li class="nav-item" id="user_personal">
+                    <a class="nav-link" href="/user_personal/">个人</a>
+                  </li>
+                    <li class="nav-item" id="user_collectlist">
+                        <a class="nav-link" href="/user_collectlist/">收藏</a>
+                    </li>
+                  <li class="nav-item" id="user_logout">
+                        <a class="nav-link" onclick="ajax_logout()">注销</a>
+                    </li>
+
+                </ul>
+              
+            <!--登录时的-->
+                  <script>
+                        document.getElementById('login').classList.remove('hide');
+                        document.getElementById('unlogin').classList.add('hide');
+                  </script>
+              
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+            </form>
+          </div>
+       </nav>
+    </div>
+       <div class="pg-content" >
+
+        <div class="menus" >
+            
+    
+<link href="/static/css/good.css" rel="stylesheet">
+<div>
+    <a href="/goodlist/?keyword=女装">女装 </a>/
+    <a href="/goodlist/?keyword=男装">男装</a>
+</div>
+<div><a href="/goodlist/?keyword=童装">童装</a></div>
+
+
+
+
+
+
+        </div>
+        <div class="content" id="content">
+          
+
+
+
+    <div class="good row">
+        <div class="good-left">
+            <img src="https://img11.360buyimg.com/n1/jfs/t1/17303/40/2009/198716/5c1860a1Ec8def2d0/7b15d56b535f9c8f.jpg">
+        </div>
+        <div class=" good-right flex-column">
+            <div class="">
+                <h5><a href="https://item.jd.com/11260806041.html">【三件套】女套装2019新年新款春季中大女长袖休闲儿童运动卫衣裤子小女孩子冬衣服洋气宝宝品牌 浅紫色常规款【三件套】马甲+上衣+裤子 </a></h5>
+            </div>
+            <div class="priceandbtn row" >
+                <h5 class="price col-6">￥99.0</h5>
+                <div class="btn-group col-6" role="group" aria-label="Basic example">
+                              
+                                  
+                                      <a  class="btn btn-light col-2" href="/collect/?goodid=11260806041&del=0&goto=good_detail"><img class="icon" src="/static/img/shoucang.png" >&ensp;0</a>
+                                  
+                              
+                              <a  class="btn btn-light col-2"><img class="icon" src="/static/img/pinglun.png" >&ensp;10</a>
+                              <a  class="btn btn-light col-2"><img class="icon" src="/static/img/dianji.png" >&ensp;0</a>
+            </div>
+            </div>
+
+            <div class="choose">
+                    
+                        <div id="choose-attrs">
+                                                                                <div id="choose-attr-1" class="li p-choose" data-type="颜色" data-idx="0">
+                        <div class="dt ">选择颜色                                                </div>
+                        <div class="dd">
+                                                        <div class="item" data-sku="11260806053" data-value="红色常规款【三件套】马甲+上衣+裤子" title="红色常规款【三件套】马甲+上衣+裤子">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-红色常规款【三件套】马甲+上衣+裤子">
+                                                                                                            <img data-img="1" src="//img13.360buyimg.com/n9/s40x40_jfs/t4075/358/1516533781/120685/75e4cc09/587db5c2N7b89aa54.jpg" width="40" height="40" alt="红色常规款【三件套】马甲+上衣+裤子"/><i>红色常规款【三件套】马甲+上衣+裤子</i>
+                                                                                                        </a>
+                                                            </div>
+                                                        <div class="item" data-sku="11260806052" data-value="黄色常规款【三件套】马甲+上衣+裤子" title="黄色常规款【三件套】马甲+上衣+裤子">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-黄色常规款【三件套】马甲+上衣+裤子">
+                                                                                                            <img data-img="1" src="//img12.360buyimg.com/n9/s40x40_jfs/t7609/360/1456165165/201247/3cf5f8b2/599d0c8eN16d34c00.jpg" width="40" height="40" alt="黄色常规款【三件套】马甲+上衣+裤子"/><i>黄色常规款【三件套】马甲+上衣+裤子</i>
+                                                                                                        </a>
+                                                            </div>
+                                                        <div class="item  selected" data-sku="11260806041" data-value="浅紫色常规款【三件套】马甲+上衣+裤子" title="浅紫色常规款【三件套】马甲+上衣+裤子">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-浅紫色常规款【三件套】马甲+上衣+裤子">
+                                                                                                            <img data-img="1" src="//img11.360buyimg.com/n9/s40x40_jfs/t1/17303/40/2009/198716/5c1860a1Ec8def2d0/7b15d56b535f9c8f.jpg" width="40" height="40" alt="浅紫色常规款【三件套】马甲+上衣+裤子"/><i>浅紫色常规款【三件套】马甲+上衣+裤子</i>
+                                                                                                        </a>
+                                                            </div>
+                                                        <div class="item" data-sku="11260806056" data-value="粉红色常规款【三件套】马甲+上衣+裤子" title="粉红色常规款【三件套】马甲+上衣+裤子">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-粉红色常规款【三件套】马甲+上衣+裤子">
+                                                                                                            <img data-img="1" src="//img11.360buyimg.com/n9/s40x40_jfs/t7420/31/1428472069/77861/d517b306/599d0968Nfb0795ce.jpg" width="40" height="40" alt="粉红色常规款【三件套】马甲+上衣+裤子"/><i>粉红色常规款【三件套】马甲+上衣+裤子</i>
+                                                                                                        </a>
+                                                            </div>
+                                                                                </div>
+                    </div>
+                                                                                                    <div id="choose-attr-2" class="li p-choose" data-type="尺码" data-idx="1">
+                        <div class="dt ">选择尺码                                                </div>
+                        <div class="dd">
+                                                        <div class="item" data-sku="11260806038" data-value="105cm" title="105cm">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-105cm">
+                                                                        105cm                                                                    </a>
+                                                            </div>
+                                                        <div class="item" data-sku="11260806063" data-value="110cm" title="110cm">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-110cm">
+                                                                        110cm                                                                    </a>
+                                                            </div>
+                                                        <div class="item" data-sku="11260806039" data-value="120cm" title="120cm">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-120cm">
+                                                                        120cm                                                                    </a>
+                                                            </div>
+                                                        <div class="item" data-sku="11260806058" data-value="130cm" title="130cm">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-130cm">
+                                                                        130cm                                                                    </a>
+                                                            </div>
+                                                        <div class="item  selected" data-sku="11260806041" data-value="140cm" title="140cm">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-140cm">
+                                                                        140cm                                                                    </a>
+                                                            </div>
+                                                        <div class="item" data-sku="11260806040" data-value="150cm" title="150cm">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-150cm">
+                                                                        150cm                                                                    </a>
+                                                            </div>
+                                                        <div class="item" data-sku="11260806042" data-value="160cm" title="160cm">
+                                <b/>
+                                                                <a href="#none" clstag="shangpin|keycount|product|yanse-160cm">
+                                                                        160cm                                                                    </a>
+                                                            </div>
+                                                                                </div>
+                    </div>
+                                                                                <div id="choose-results" class="li" style="display:none"><div class="dt">已选择</div><div class="dd"/></div>
+                                    </div>
+
+                                                
+                                                                                                
+                    
+
+
+            </div>
+
+        </div>
+
+    </div>
+    <br/>
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="nav-link active" id="tab-detail"  >
+            <a href="#detail" data-toggle="tab" id="a-detail">
+                 商品详情
+            </a>
+        </li>
+        <li class="nav-link"  id="tab-comment"  ><a href="#comment" data-toggle="tab" id="a-comment">商品评论</a></li>
+
+    </ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade" id="comment">
+        <ul>
+            <li class="comment-list">
+                <div class="form-group">
+                  <label for="comment">评论:</label>
+                  <textarea class="form-control" rows="5" id="comment"></textarea>
+                </div>
+            </li>
+            
+                <li class="comment-list">
+                    <img class="avatar" src="http://storage.360buyimg.com/i.imageUpload/6a645f3631323063623839643064636531353238303839373435323834_sma.jpg">
+                    <text>&emsp;l***蛋</text>
+                    <p>刚收到，送人的，看着有点薄呀，颜色好看，不知道质量如何。</p>
+                </li>
+            
+                <li class="comment-list">
+                    <img class="avatar" src="http://storage.360buyimg.com/i.imageUpload/6a645f3562646330666561653830663931353332393235373536343938_sma.jpg">
+                    <text>&emsp;娜***儿</text>
+                    <p>不知道，我家宝贝还没穿，不过看起来挺不错的，质量可以，摸着料子不错</p>
+                </li>
+            
+                <li class="comment-list">
+                    <img class="avatar" src="http://storage.360buyimg.com/i.imageUpload/77647241614a6a4759546468485731353530323233313938383633_sma.jpg">
+                    <text>&emsp;r***W</text>
+                    <p>穿着合身，大小正好。衣服跟图片上描述的一模样！质量不错！点赞！</p>
+                </li>
+            
+                <li class="comment-list">
+                    <img class="avatar" src="http://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg">
+                    <text>&emsp;j***f</text>
+                    <p>质量好穿着舒服，很满意这次购物。</p>
+                </li>
+            
+                <li class="comment-list">
+                    <img class="avatar" src="http://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg">
+                    <text>&emsp;j***t</text>
+                    <p>真的挺好的，赶紧下手吧。反正超级超级超级喜欢的，解答疑问不厌其烦，细致认真，掌柜给这个客服加鸡腿吧 哈哈关键是东西好，最满意的一次购物，下次还会光顾小店的很满意的一次购物质量非常好，物有所值，很久没这样有空去写评价了，以前都是三几句话完事，大家可以放心入货，信不信由你！发货速度非常快，</p>
+                </li>
+            
+                <li class="comment-list">
+                    <img class="avatar" src="http://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg">
+                    <text>&emsp;jjiazhou</text>
+                    <p>东西不错很值得买书奇谈一按看书架哦哦哦</p>
+                </li>
+            
+                <li class="comment-list">
+                    <img class="avatar" src="http://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg">
+                    <text>&emsp;j***z</text>
+                    <p>老板非常诚信，三天就到货了，拨打了查询防伪的电话后，证明宝贝是正品，价格也很便宜，以后我需要的话就在你们家购买了，我家人，我朋友我同事，我同学要买的话，我都会推荐到你们家，谢谢老板，希望下次再次合作</p>
+                </li>
+            
+                <li class="comment-list">
+                    <img class="avatar" src="http://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg">
+                    <text>&emsp;e***n</text>
+                    <p>货到很快。衣服不错。很喜欢。</p>
+                </li>
+            
+                <li class="comment-list">
+                    <img class="avatar" src="http://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg">
+                    <text>&emsp;j***e</text>
+                    <p>质量非常好，与卖家描述的完全一致，非常满意，真的很喜欢，完全超出了期望值，卖家发货速度快，包装仔细，严实，物流公司服务态度很好，运货速度很快，很满意的一次购物</p>
+                </li>
+            
+                <li class="comment-list">
+                    <img class="avatar" src="http://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg">
+                    <text>&emsp;j***o</text>
+                    <p>已经是第二次购买了，总体还不错，做工精细，有喜欢的朋友可以直接下手购买，很喜欢，绝对划算，下次还会光临，祝店家生意兴隆，非常满意的一次购物，必须好评</p>
+                </li>
+            
+        </ul>
+
+
+    </div>
+	<div class="tab-pane fade in active show" id="detail">
+		
+            <div class="p-parameter"><ul id="parameter-brand" class="p-parameter-list">
+                            <li title="爱依童">品牌： <a href="//list.jd.com/list.html?cat=1319,11842,11222&amp;ev=exbrand_90906" clstag="shangpin|keycount|product|pinpai_2" target="_blank">爱依童</a>
+                                <!--a href="#none" class="follow-brand btn-def" clstag="shangpin|keycount|product|guanzhupinpai"><b>&hearts;</b>关注 -->
+                            </li>
+                        </ul>
+                                                <ul class="parameter2 p-parameter-list">
+                                <li title="【三件套】女童套装2019新年新款春季中大童装女长袖休闲儿童运动卫衣裤子小女孩子冬装衣服洋气宝宝品牌 浅紫色常规款【三件套】马甲+上衣+裤子 140cm">商品名称：【三件套】女童套装2019新年新款春季中大童装女长袖休闲儿童运动卫衣裤子小女孩子冬装衣服洋气宝宝品牌 浅紫色常规款【三件套】马甲+上衣+裤子 140cm</li>
+    <li title="11260806041">商品编号：11260806041</li>
+                      <li title="爱依童儿童套装官方旗舰店">店铺： <a href="//aiyitong.jd.com" target="_blank">爱依童儿童套装官方旗舰店</a></li>
+                     <li title="0.6kg">商品毛重：0.6kg</li>
+                <li title="AYT1512007-A">货号：AYT1512007-A</li>
+                                <li title="三件套">组合形式：三件套</li>
+                  <li title="女">适用性别：女</li>
+                  <li title="3-6岁，6-9岁，9-12岁">适用年龄：3-6岁，6-9岁，9-12岁</li>
+                  <li title="2017春季">上市时间：2017春季</li>
+                  <li title="春秋">适用季节：春秋</li>
+                  <li title="拉链">衣门襟：拉链</li>
+                  <li title="棉">面料：棉</li>
+                  <li title="B类">安全等级：B类</li>
+                                          </ul>
+                                                <ul class="quality-icon">
+                                                                                                                                            <li class="J-ql-iframe ql-ico-1" data-type="1" data-text="质量承诺" style="display:none" data-title="质量承诺" clstag="shangpin|keycount|product|zhijianchengnuo">
+                                <a href="#none"><i/><span>质量承诺</span></a>
+                            </li>
+                            <li class="ql-ico-5" data-type="5" data-text="耐久性标签" style="display:none" clstag="shangpin|keycount|product|naijiuxingbiaoqian">
+                                <a href="#none"><i/><span>耐久性标签</span></a>
+                            </li>
+                            <li class="ql-ico-3" data-type="3" data-text="吊牌" style="display:none" clstag="shangpin|keycount|product|diaopai">
+                                <a href="#none"><i/><span>吊牌</span></a>
+                            </li>
+                            <li class="ql-ico-4" data-type="4" data-text="质检报告" style="display:none" clstag="shangpin|keycount|product|zhijianbaogao">
+                                <a href="#none"><i/><span>质检报告</span></a>
+                            </li>
+                            <li class="ql-ico-2" data-type="2" data-text="CCC证书" style="display:none" clstag="shangpin|keycount|product|3czhengshu">
+                                <a href="#none"><i/><span>CCC证书</span></a>
+                            </li>
+                                                        <li class="fresh-ico-1" data-text="实时温控" data-type="v1" style="display:none" clstag="shangpin|keycount|product|shishiwenkong">
+                                <a href="#none"><i/><span class="J-fresh-wd fresh-wd"/><span>实时温控</span></a>
+                            </li>
+                            <li class="fresh-ico-2" data-text="检验报告" data-type="v2" style="display:none" clstag="shangpin|keycount|product|jiancebaogao">
+                                <a href="#none"><i/><span>检验报告</span></a>
+                            </li>
+                        </ul>
+                    <ul id="J-detail-content-tab" class="detail-content-tab"/>
+                                                                                </div>
+            <br>
+            <p><div id="J-detail-content"><div style="text-align: center;"><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t22960/170/1850142052/127374/7dbbb83b/5b6bf259Ne2f1695a.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t23629/184/1788791070/210817/dbcfc679/5b6bf258Nc0630072.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t26011/312/347418272/179155/80c31007/5b6bf258Nd16a2e7a.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t22861/142/1887439736/148998/7ace50d/5b6bf258Ncbc1833d.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t24532/295/1902888757/221933/d28680eb/5b6bf258N1e65c422.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t23521/180/1904759345/164980/4ae7b046/5b6bf258Ne8f0437c.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t24325/218/1850147285/144627/2cec1c27/5b6bf258N5a873a2f.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t22636/190/1892882039/174313/4d5bdc01/5b6bf258N8b95d92e.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t22930/195/1925406694/169742/9016d8e2/5b6bf259N5a7f5a68.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t24475/258/1884806766/196012/81b6c50e/5b6bf259N4783319f.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t25573/283/344614848/177318/cd11ef23/5b6bf259Nbd88c6f6.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t22702/150/1929522033/213584/515d0698/5b6bf259N27d1ce8a.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t25516/293/342267828/115397/a101b6e2/5b6bf259N2bf66909.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t23464/193/1873375855/125012/61581ae8/5b6bf259N03c9333b.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t25462/284/340913827/270431/6439efbe/5b6bf259Na33fe128.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t25960/259/331138482/278431/f4c1d2d5/5b6bf25aN40a73a18.jpg"/><br/><img alt="" class="" src="//img30.360buyimg.com/popWaterMark/jfs/t22693/144/1871973106/191519/d38a278c/5b6bf25aNf3509929.jpg"/><br/><br/></div><p><br/></p><br/></div></p>
+        
+    </div>
+
+
+</div>
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+
+
+
+
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="/static/bootstrap-4.0.0-dist/js/bootstrap.js"></script>
+    <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+
+    <script   type="text/javascript" src="/static/js/layout.js">
+
+    </script>
+    <script>
+         if(document.body.clientWidth>990){
+             document.getElementById("content").style.width=(document.body.clientWidth-200)+"px";
+         }
+
+        window.onresize = function(){
+
+            if(document.body.clientWidth>990){
+                document.getElementById("content").style.width=(document.body.clientWidth-200)+"px";
+
+             }else{
+                    document.getElementById("content").style.width=(document.body.clientWidth)+"px";
+                }
+
+                
+        }
+        function ajax_login(){
+            // alert('ajax')
+            username=$('#username').val()
+            pwd=$('#pwd').val()
+            if(username!=''){
+                    $.ajax({
+                    url:'/login/',
+                    type:'POST',
+                    data:{
+                        'username':username,
+                        'pwd':pwd
+                    },
+                    success:function(data){
+                        //当服务端处理完了，返回后，此函数自动调用
+                        //data为服务端返回的值。
+                        console.log(data);//data=ok或者error
+                        data=JSON.parse(data)
+                        console.log(data)
+                        if(data.error == 0){
+                            // alert('添加成功');
+                            document.getElementById('login').classList.remove('hide');
+                            document.getElementById('unlogin').classList.add('hide');
+                            location.reload();//表示要跳转的地址
+
+                        }else{
+                            // alert(data);
+                            $('#msg').text(data.data);
+                        }
+                    },
+                    failure:function(){
+                        $('#msg').text('网络忙');
+                    }
+                })
+            }else{
+                $('#msg').text('用户名不能为空！')
+            }
+
+    };
+        function ajax_logout(){
+            $.ajax({
+                    url:'/logout/',
+                    type:'POST',
+                    data:{
+
+                    },
+                    success:function(data){
+                        //当服务端处理完了，返回后，此函数自动调用
+                        //data为服务端返回的值。
+                            document.getElementById('unlogin').classList.remove('hide');
+                            document.getElementById('login').classList.add('hide');
+                            // location.href="/classes";//表示要跳转的地址
+                            location.reload();
+                    },
+                    failure:function(){
+                        $('#msg').text('网络忙');
+                    }
+                })
+        }
+        function ajax_register(){
+            alert('register')
+            username=$('#username').val()
+            pwd=$('#pwd').val()
+            if(username!=''){
+                $.ajax({
+                        url:'/register/',
+                        type:'POST',
+                        data:{
+                            'username':username,
+                            'pwd':pwd
+                        },
+                        success:function(data){
+                            //当服务端处理完了，返回后，此函数自动调用
+                            //data为服务端返回的值。
+                            console.log(data);//data=ok或者error
+                            data=JSON.parse(data)
+                            console.log(data)
+                            if(data.error == 0){
+                                // alert('添加成功');
+                                document.getElementById('login').classList.remove('hide');
+                                document.getElementById('unlogin').classList.add('hide');
+                                // location.href="/classes";//表示要跳转的地址
+                                location.reload();
+
+                            }else{
+                                // alert(data);
+                                $('#msg').text(data.data);
+                            }
+                        },
+                    failure:function(){
+                        $('#msg').text('网络忙');
+                    }
+                    })
+            }else{
+                $('#msg').text('用户名不能为空！')
+            }
+        }
+
+    </script>
+    
+
+    <script>
+
+
+        $('#myTab li a').click(function (e) {
+            
+            
+            $(this).tab('show');
+
+            if(this.id=="a-comment"){
+                
+                document.getElementById('tab-detail').classList.remove('active')
+                document.getElementById('tab-comment').classList.add('active')
+            }else if(this.id=="a-detail"){
+                
+                document.getElementById('tab-comment').classList.remove('active')
+                document.getElementById('tab-detail').classList.add('active')
+            }
+
+        })
+
+        
+		
+        
+
+
+
+    </script>
+
+
+</body>
+</html>

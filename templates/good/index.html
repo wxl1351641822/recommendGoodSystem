@@ -1,0 +1,24 @@
+{#{% extends './good_exlayout.html' %}#}
+{% extends '../layout.html' %}
+{% block css %}
+    <link href="/static/css/good_index.css" rel="stylesheet">
+{% endblock %}
+{% block menus %}
+    {% include './good_exlayout.html' %}
+{% endblock %}
+{% block content %}
+    {% include '../navbar_content.html' %}
+
+    {% include '../goodlist.html' %}
+
+{% endblock %}
+
+{% block js %}
+{#    <script>#}
+{#        function gotodetail(url){#}
+{#    alert(url);#}
+{#    location.href=url;#}
+
+{#    </script>#}
+    <script src="/static/js/goodjs.js"></script>
+{% endblock %}
