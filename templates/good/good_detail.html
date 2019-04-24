@@ -104,7 +104,12 @@
     </div>
     <br/>
     <ul id="myTab" class="nav nav-tabs">
-        <li class="nav-link active" id="tab-detail"  >
+        <li class="nav-link active" id="tab-recommend"  >
+            <a href="#recommend" data-toggle="tab" id="a-recommend">
+                相似商品
+            </a>
+        </li>
+        <li class="nav-link" id="tab-detail"  >
             <a href="#detail" data-toggle="tab" id="a-detail">
                  商品详情
             </a>
@@ -113,12 +118,15 @@
 
     </ul>
 <div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade  in active show" id="recommend">
+        {% include '../goodlist.html' %}
+    </div>
     <div class="tab-pane fade" id="comment">
         <ul>
             <li class="comment-list">
                 <div class="form-group">
                   <label for="comment">评论:</label>
-                  <textarea class="form-control" rows="5" id="comment"></textarea>
+                  <textarea class="form-control" rows="5" id="text_comment"></textarea>
                 </div>
             </li>
             {% for comment in good_comments %}
@@ -132,7 +140,7 @@
 
 
     </div>
-	<div class="tab-pane fade in active show" id="detail">
+	<div class="tab-pane fade id="detail">
 		{% autoescape off %}
             <div class="p-parameter">{{ good_detail.0.detail }}</div>
             <br>
@@ -157,12 +165,19 @@
 
             if(this.id=="a-comment"){
                 {#console.log(this.id)#}
+                document.getElementById('tab-recommend').classList.remove('active')
                 document.getElementById('tab-detail').classList.remove('active')
                 document.getElementById('tab-comment').classList.add('active')
             }else if(this.id=="a-detail"){
                 {#console.log(this.id)#}
+                 document.getElementById('tab-recommend').classList.remove('active')
                 document.getElementById('tab-comment').classList.remove('active')
                 document.getElementById('tab-detail').classList.add('active')
+            }else if(this.id=="a-recommend"){
+                {#console.log(this.id)#}
+                 document.getElementById('tab-recommend').classList.add('active')
+                document.getElementById('tab-comment').classList.remove('active')
+                document.getElementById('tab-detail').classList.remove('active')
             }
 
         })
