@@ -124,6 +124,18 @@ def index(request):#函数用于
                 good['img_url']="/static/img/shoucang.png"
     else:
         goodlist=[]
+    for good in goodlist:
+        sqlstr="select goodid,tag from recommend_good_tag_count where goodid='%s' order by tag desc limit 0,3"%(good['id'])
+        taglist=sql.select(sqlstr)
+        if(len(taglist['data'])>=3):
+            good.update({'tag1':taglist['data'][0]['tag'],'tag2':taglist['data'][1]['tag'],'tag3':taglist['data'][2]['tag']})
+        elif((len(taglist['data'])==2)):
+            good.update({'tag1': taglist['data'][0]['tag'], 'tag2': taglist['data'][1]['tag'],'tag3':"没有标签"})
+        elif ((len(taglist['data']) == 1)):
+            good.update({'tag1': taglist['data'][0]['tag'],'tag2':"没有标签",'tag3':"没有标签"})
+        else:
+            good.update({'tag1': "没有标签", 'tag2': "没有标签", 'tag3': "没有标签"})
+    print(goodlist)
     return render(request, 'good/index.html',{'error':0,'goodlist':goodlist,'login_flag':login_flag,'count_lis':count_lis,'page':page,'max_page':max_page,'goto':'/index/?'})
 
 def good_detail(request):
@@ -149,9 +161,19 @@ def good_detail(request):
     else:
         try:
             # print(goodid)
-            sqlstr="select * from goodlist where goodlist.id='%s'"%(goodid)
+            # sqlstr="select * from goodlist where goodlist.id='%s'"%(goodid)
+            # goodlist=sql.select(sqlstr)
+            # print(goodlist)
+            sqlstr="select * from sim_good_recommend_list,goodlist where goodlist.id=goodid2 and goodid1='%s' order by sum desc limit 0,16"%(goodid)
             goodlist=sql.select(sqlstr)
-            print(goodlist)
+            # print("goodlist0",goodlist0)
+            # if(goodlist0['error']==0):
+            #     if(goodlist['error']!=0):
+            #         goodlist=goodlist0
+                # else:
+                #     goodlist['data']=goodlist0['data']+goodlist['data']
+
+
             sqlstr = "select * from gooddetaillist where gooddetaillist.id='%s'" % (goodid)
             good_detail = sql.select(sqlstr)
             print(good_detail)
