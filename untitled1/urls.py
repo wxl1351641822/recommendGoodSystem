@@ -59,7 +59,8 @@ urlpatterns = [
     path('collect/',good.collect),
     #首页商品列表
     path('index/',good.index),
-    path('goodlist/',good.goodlist),
+    path('freq/', good.freq),
+
     path('good_detail/',good.good_detail),
 
 #     user

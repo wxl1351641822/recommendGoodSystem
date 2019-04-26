@@ -6,18 +6,18 @@
                       <img class="card-img-top" src="{{ good.img_url }}" alt="Card image cap">
                       <div class="card-body">
                           <div class="btn-group col-12"  style="padding-left:0;" role="group" aria-label="Basic example">
-                              <a  class="btn btn-light col-6" style="text-align:left;padding-left:0px;" ><text style="color:red;">￥{{ good.price }}</text></a>
+                              <a  class="col-6" style="text-align:left;padding-left:0px;" ><text style="color:red;">￥{{ good.price }}</text></a>
 
                               {% if login_flag == 0 %}
-                                    <a  class="btn btn-light col-3"  href="/collect/?goodid={{ good.id }}&del=0&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ good.collect_num }}</a>
+                                    <a  class="col-3" style="padding-left:0;padding-right:0;" href="/collect/?goodid={{ good.id }}&del=0&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ good.collect_num }}</a>
                               {% else %}
                                   {% if login_flag == good.userid %}
-                                      <a  class="btn btn-light col-3" href="/collect/?goodid={{ good.id }}&del=1&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang_1.png" >&ensp;{{ good.collect_num }}</a>
+                                      <a  class=" col-3" style="padding-left:0;padding-right:0;" href="/collect/?goodid={{ good.id }}&del=1&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang_1.png" >&ensp;{{ good.collect_num }}</a>
                                   {% else %}
-                                      <a  class="btn btn-light col-3" href="/collect/?goodid={{ good.id }}&del=0&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ good.collect_num }}</a>
+                                      <a  class="col-3" style="padding-left:0;padding-right:0;" href="/collect/?goodid={{ good.id }}&del=0&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ good.collect_num }}</a>
                                   {% endif %}
                               {% endif %}
-                              <a  class="btn btn-light col-3"><img class="icon" src="/static/img/pinglun.png" >&ensp;{{ good.comment_num }}</a>
+                              <a  class="col-3" style="padding-left:0;padding-right:0;"><img class="icon" src="/static/img/pinglun.png" >&ensp;{{ good.comment_num }}</a>
 
                           </div>
 

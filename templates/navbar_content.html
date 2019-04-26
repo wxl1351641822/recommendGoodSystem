@@ -7,27 +7,23 @@
           <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-              <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Dropdown link
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+              <li class="nav-item" id="personal_recommend">
+                   <a class="nav-link" href="/index/">个性化推荐</a>
+
               </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Dropdown link
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                <li class="nav-item"  id="freq">
+                    <a class="nav-link" href="/freq/?keyword={{ keyword }}">热门</a>
+
               </li>
 
             </ul>
           </div>
 </nav>
+
+<script>
+    {% if key == 1 %}
+         document.getElementById('freq').classList.add('active');
+    {% else %}
+        document.getElementById('personal_recommend').classList.add('active');
+    {% endif %}
+</script>
