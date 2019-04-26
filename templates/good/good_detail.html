@@ -75,20 +75,21 @@
                 <h5><a href="{{ goodlist.0.url }}">{{ goodlist.0.title }}</a></h5>
             </div>
             <div class="priceandbtn row" >
-                <h5 class="price col-6">￥{{ goodlist.0.price }}</h5>
-                <div class="btn-group col-6" role="group" aria-label="Basic example">
+                <div class="btn-group col-12"  style="margin-left:15px;padding-left:0;" role="group" aria-label="Basic example">
+                              <a  class="col-8" style="text-align:left;padding-left:0px;" ><text style="color:red;">￥{{ goodlist.0.price }}</text></a>
+
                               {% if login_flag == 0 %}
-                                    <a  class="btn btn-light col-2" href="/collect/?goodid={{ goodlist.0.id }}&del=0&goto=good_detail"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ goodlist.0.collect_num }}</a>
+                                    <a  class="text-right col-2" style="padding-right:0px;" href="/collect/?goodid={{ goodlist.0.id }}&del=0&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ goodlist.0.collect_num }}</a>
                               {% else %}
-                                  {% if login_flag != -1 %}
-                                      <a  class="btn btn-light col-2" href="/collect/?goodid={{ goodlist.0.id }}&del=1&goto=good_detail"><img class="icon" src="/static/img/shoucang_1.png" >&ensp;{{ goodlist.0.collect_num }}</a>
+                                  {% if login_flag == good.userid %}
+                                      <a  class="text-right col-2" style="padding-right:0px;" href="/collect/?goodid={{ goodlist.0.id }}&del=1&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang_1.png" >&ensp;{{ goodlist.0.collect_num }}</a>
                                   {% else %}
-                                      <a  class="btn btn-light col-2" href="/collect/?goodid={{ goodlist.0.id }}&del=0&goto=good_detail"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ goodlist.0.collect_num }}</a>
+                                      <a  class="text-right col-2" style="padding-right:0px;" href="/collect/?goodid={{ goodlist.0.id }}&del=0&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ goodlist.0.collect_num }}</a>
                                   {% endif %}
                               {% endif %}
-                              <a  class="btn btn-light col-2"><img class="icon" src="/static/img/pinglun.png" >&ensp;{{ goodlist.0.comment_num }}</a>
-                              <a  class="btn btn-light col-2"><img class="icon" src="/static/img/dianji.png" >&ensp;{{ goodlist.0.click_num }}</a>
-            </div>
+                              <a  class="text-right col-1" style="padding-right:0px;"><img class="icon" src="/static/img/pinglun.png" >&ensp;{{ goodlist.0.comment_num }}</a>
+
+                          </div>
             </div>
 
             <div class="choose">
@@ -140,7 +141,7 @@
 
 
     </div>
-	<div class="tab-pane fade id="detail">
+	<div class="tab-pane fade" id="detail">
 		{% autoescape off %}
             <div class="p-parameter">{{ good_detail.0.detail }}</div>
             <br>

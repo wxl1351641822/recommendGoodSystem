@@ -109,7 +109,8 @@ def index(request):#函数用于
     else:
         login_flag=int(id)
         message=tag_recommend.Recommend_db(login_flag,page,0)
-        max_page=message['max_page']
+        if not page:
+            max_page=message['max_page']
     #找不到再显示
         # sqlstr="select * from goodlist left join collect on goodlist.id=collect.goodid and collect.userid='%d' order by collect_num desc limit %d,16"%(login_flag,(page-1)*16)
     # print(sqlstr)
@@ -120,22 +121,11 @@ def index(request):#函数用于
         for good in goodlist:
             # print(good)
             if(good['img_url'].find("http")<0):
-
                 good['img_url']="/static/img/shoucang.png"
     else:
         goodlist=[]
     for good in goodlist:
-        sqlstr="select goodid,tag from recommend_good_tag_count where goodid='%s' order by tag desc limit 0,3"%(good['id'])
-        taglist=sql.select(sqlstr)
-        if(len(taglist['data'])>=3):
-            good.update({'tag1':taglist['data'][0]['tag'],'tag2':taglist['data'][1]['tag'],'tag3':taglist['data'][2]['tag']})
-        elif((len(taglist['data'])==2)):
-            good.update({'tag1': taglist['data'][0]['tag'], 'tag2': taglist['data'][1]['tag'],'tag3':"没有标签"})
-        elif ((len(taglist['data']) == 1)):
-            good.update({'tag1': taglist['data'][0]['tag'],'tag2':"没有标签",'tag3':"没有标签"})
-        else:
-            good.update({'tag1': "没有标签", 'tag2': "没有标签", 'tag3': "没有标签"})
-    print(goodlist)
+        good_tag(good)
     return render(request, 'good/index.html',{'error':0,'goodlist':goodlist,'login_flag':login_flag,'count_lis':count_lis,'page':page,'max_page':max_page,'goto':'/index/?'})
 
 def good_detail(request):
@@ -166,6 +156,8 @@ def good_detail(request):
             # print(goodlist)
             sqlstr="select * from sim_good_recommend_list,goodlist where goodlist.id=goodid2 and goodid1='%s' order by sum desc limit 0,16"%(goodid)
             goodlist=sql.select(sqlstr)
+            for good in goodlist['data']:
+                good_tag(good)
             # print("goodlist0",goodlist0)
             # if(goodlist0['error']==0):
             #     if(goodlist['error']!=0):
@@ -248,8 +240,23 @@ def goodlist(request):
         goodlist = message['data']
     else:
         goodlist = []
+    for good in goodlist:
+        good_tag(good)
     return render(request, 'good/index.html',
                   {'error': 0, 'goodlist': goodlist, 'login_flag': login_flag, 'count_lis': count_lis, 'page': page,
                    'max_page': max_page, 'goto': '/goodlist/?keyword='+keyword+'&'})
 
 
+def good_tag(good):
+    sqlstr = "select goodid,tag from recommend_good_tag_count where goodid='%s' and tag not in (select keyword from goodlist where recommend_good_tag_count.goodid=goodlist.id) order by tag desc limit 0,3" % (
+    good['id'])
+    taglist = sql.select(sqlstr)
+    if (len(taglist['data']) >= 3):
+        good.update(
+            {'tag1': taglist['data'][0]['tag'], 'tag2': taglist['data'][1]['tag'], 'tag3': taglist['data'][2]['tag']})
+    elif ((len(taglist['data']) == 2)):
+        good.update({'tag1': taglist['data'][0]['tag'], 'tag2': taglist['data'][1]['tag'], 'tag3': "没有标签"})
+    elif ((len(taglist['data']) == 1)):
+        good.update({'tag1': taglist['data'][0]['tag'], 'tag2': "没有标签", 'tag3': "没有标签"})
+    else:
+        good.update({'tag1': "没有标签", 'tag2': "没有标签", 'tag3': "没有标签"})

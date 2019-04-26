@@ -2,7 +2,7 @@ from app import sql
 import traceback
 def Recommend_db(userid,page,keyword):
     recommend_list={'error':0,'data':[],'max_page':1}
-    count={'error':0,'data':0}
+    count={'error':1,'data':0}
     try:
         if(keyword==0):
             if (page == 1):
