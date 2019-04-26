@@ -1,4 +1,4 @@
-from app import sql
+from app import sql,good
 from django.shortcuts import HttpResponse,render,redirect
 import traceback
 import json
@@ -53,14 +53,15 @@ def user_collectlist(request):
         goodlist = message['data']
     else:
         goodlist = []
-
+    for good0 in goodlist:
+        good.good_tag(good0)
     print(start, end)
     count_lis = list(range(start, end + 1))
     print('/collect/')
     print(count_lis)
     return render(request, 'user/collect.html',
                   {'error': 0, 'goodlist': goodlist, 'login_flag': login_flag, 'count_lis': count_lis, 'page': page,
-                   'max_page': max_page,'goto':'/user_collectlist/'})
+                   'max_page': max_page,'goto':'/user_collectlist/?'})
     #
     # return render(request, 'user/collect.html')
 

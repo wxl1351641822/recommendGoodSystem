@@ -1,10 +1,34 @@
 
 <link href="/static/css/good.css" rel="stylesheet">
-<div>
-    <a href="/goodlist/?keyword=女装">女装 </a>/
-    <a href="/goodlist/?keyword=男装">男装</a>
+<ul id="myTab1" class="nav nav-tabs">
+        <li class="nav-link active" id="tab-keyword"  >
+            <a href="#keyword" data-toggle="tab" id="a-keyword">
+                类别
+            </a>
+        </li>
+        <li class="nav-link" id="tab-tag"  >
+            <a href="#choosetag" data-toggle="tab" id="a-tag">
+                 标签
+            </a>
+        </li>
+
+    </ul>
+<div id="myTabContent" class="tab-content">
+<div  class="tab-pane fade  in active show" id="keyword">
+    <div class="line">
+        <a href="{{ goto }}keyword=女装">&ensp;女装 </a> /
+        <a href="{{ goto }}keyword=男装">男装</a> /
+        <a href="{{ goto }}keyword=女装">童装 </a>
+    </div>
 </div>
-<div><a href="/goodlist/?keyword=童装">童装</a></div>
+<div class="tab-pane fade in " id="choosetag">
+{% for tag in freq_tag %}
+        <div class="line">
+            <a href="{{ goto }}tag={{ tag.tag }}">&ensp;{{ tag.tag }}&ensp;|&ensp;{{ tag.count }}</a>
+        </div>
+{% endfor %}
+</div>
+</div>
 
 
 

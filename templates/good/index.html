@@ -21,4 +21,34 @@
 
 {#    </script>#}
     <script src="/static/js/goodjs.js"></script>
+    <script>
+{#    tab的响应#}
+
+        $('#myTab1 li a').click(function (e) {
+            {#e.preventDefault();#}
+            {#console.log(this.href)#}
+
+            $(this).tab('show');
+
+            if(this.id=="a-tag"){
+                {#console.log(this.id)#}
+                document.getElementById('tab-keyword').classList.remove('active')
+                document.getElementById('tab-tag').classList.add('active')
+
+            }else if(this.id=="a-keyword"){
+                {#console.log(this.id)#}
+
+                 document.getElementById('tab-keyword').classList.add('active')
+                document.getElementById('tab-tag').classList.remove('active')
+            }
+
+        })
+
+        {#$(function () {#}
+		{#    $('#myTab li:eq(0) a').tab('show');#}
+        {##}
+
+
+
+    </script>
 {% endblock %}
