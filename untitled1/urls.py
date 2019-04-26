@@ -62,6 +62,7 @@ urlpatterns = [
     path('freq/', good.freq),
 
     path('good_detail/',good.good_detail),
+    path('sim_user/',good.sim_user),
 
 #     user
     #商品书藏页

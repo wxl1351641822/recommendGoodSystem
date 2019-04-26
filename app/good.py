@@ -73,13 +73,39 @@ def freq(request):
     page = request.GET.get('page')
     # print(page)
     keyword = request.GET.get('keyword')
-
+    tag=request.GET.get('tag')
     max_page = request.GET.get('max_page')
 
-    goodlist, login_flag, count_lis, page, max_page = get_goodlist(id, login_flag, keyword, page, max_page, 1)
+    goodlist, login_flag, count_lis, page, max_page = get_goodlist(id, login_flag, keyword, page, max_page, 1,tag)
+    goto = '/freq/?'
+    if keyword:
+        goto = goto + 'keyword=' + keyword+'&'
+    if tag:
+        goto = goto + 'tag=' + tag+'&'
     return render(request, 'good/index.html',
                   {'error': 0, 'goodlist': goodlist, 'login_flag': login_flag, 'count_lis': count_lis, 'page': page,
-                   'max_page': max_page, 'goto': '/freq/?','key':1})
+                   'max_page': max_page, 'goto': goto,'key':1,'freq_tag':tag_recommend.get_freqtag()})
+
+def sim_user(request):
+    # 先去cookie中找凭证
+    id = request.COOKIES.get('userid')
+    # print(id)
+    login_flag = id;
+    page = request.GET.get('page')
+    # print(page)
+    keyword = request.GET.get('keyword')
+    tag = request.GET.get('tag')
+    max_page = request.GET.get('max_page')
+
+    goodlist, login_flag, count_lis, page, max_page = get_goodlist(id, login_flag, keyword, page, max_page, 2,tag)
+    goto='/sim_user/?'
+    if keyword:
+        goto=goto+'keyword='+keyword+'&'
+    if tag:
+        goto = goto+'tag=' + tag+'&'
+    return render(request, 'good/index.html',
+                  {'error': 0, 'goodlist': goodlist, 'login_flag': login_flag, 'count_lis': count_lis, 'page': page,
+                   'max_page': max_page, 'goto': goto, 'key': 2,'freq_tag':tag_recommend.get_freqtag()})
 
 
 def index(request):#函数用于
@@ -92,9 +118,14 @@ def index(request):#函数用于
     keyword=request.GET.get('keyword')
 
     max_page = request.GET.get('max_page')
-
-    goodlist,login_flag,count_lis,page,max_page=get_goodlist(id,login_flag,keyword,page,max_page,0)
-    return render(request, 'good/index.html',{'error':0,'goodlist':goodlist,'login_flag':login_flag,'count_lis':count_lis,'page':page,'max_page':max_page,'goto':'/index/?'})
+    tag = request.GET.get('tag')
+    goodlist,login_flag,count_lis,page,max_page=get_goodlist(id,login_flag,keyword,page,max_page,0,tag)
+    goto='/index/?'
+    if keyword:
+        goto=goto+'keyword='+keyword+'&'
+    if tag:
+        goto = goto+'tag=' + tag+'&'
+    return render(request, 'good/index.html',{'error':0,'goodlist':goodlist,'login_flag':login_flag,'count_lis':count_lis,'page':page,'max_page':max_page,'goto':goto,'key':0,'freq_tag':tag_recommend.get_freqtag()})
 
 def good_detail(request):
     goodid=request.GET.get('goodid')
@@ -158,7 +189,7 @@ def good_detail(request):
 
         return HttpResponse(str)
 
-def get_goodlist(id,login_flag,keyword,page,max_page,key):
+def get_goodlist(id,login_flag,keyword,page,max_page,key,tag):
     if not page:
         page=1;
         if not keyword:
@@ -170,7 +201,7 @@ def get_goodlist(id,login_flag,keyword,page,max_page,key):
             count = count['data'][0]['count(*)']
         else:
             count = 0;
-        max_page = int(count / 16) + 1
+        max_page = int((count-1) / 16) + 1
 
     page = int(page)
     max_page = int(max_page)
@@ -203,10 +234,12 @@ def get_goodlist(id,login_flag,keyword,page,max_page,key):
         message = sql.select(sqlstr)
     else:
         login_flag=int(id)
-        if (not keyword):
-            message=tag_recommend.Recommend_db(login_flag,page,0)
+        if(not keyword):
+            keyword=0
+        if(key==2):
+            message=tag_recommend.sim_user_good_recommend(login_flag,page,keyword)
         else:
-            message = tag_recommend.Recommend_db(login_flag, page, keyword)
+             message = tag_recommend.Recommend_db(login_flag, page, keyword)
         if not page:
             max_page=message['max_page']
     #找不到再显示

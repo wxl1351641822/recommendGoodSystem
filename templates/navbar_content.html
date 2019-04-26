@@ -11,10 +11,16 @@
                    <a class="nav-link" href="/index/">个性化推荐</a>
 
               </li>
+                <li class="nav-item"  id="sim_user">
+                    <a class="nav-link" href="/sim_user/?keyword={{ keyword }}">相似用户推荐</a>
+
+              </li>
                 <li class="nav-item"  id="freq">
                     <a class="nav-link" href="/freq/?keyword={{ keyword }}">热门</a>
 
               </li>
+
+
 
             </ul>
           </div>
@@ -23,6 +29,8 @@
 <script>
     {% if key == 1 %}
          document.getElementById('freq').classList.add('active');
+         {% elif key == 2 %}
+         document.getElementById('sim_user').classList.add('active');
     {% else %}
         document.getElementById('personal_recommend').classList.add('active');
     {% endif %}

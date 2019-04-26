@@ -29,7 +29,7 @@ def Recommend_db(userid,page,keyword):
             count = count['data'][0]['count(*)']
         else:
             count = 0;
-        recommend_list['max_page'] = int(count/16)+1
+        recommend_list['max_page'] = int((count-1)/16)+1
         print(recommend_list['max_page'])
     except Exception as e:
         traceback.print_exc()
@@ -37,7 +37,7 @@ def Recommend_db(userid,page,keyword):
     return recommend_list
 
 def get_freqtag():
-    sqlstr="select * from tagfreq order by count desc"
+    sqlstr="select * from tagfreq order by count desc limit 0,13"
     freqtag_list=sql.select(sqlstr)
     print(freqtag_list)
     return freqtag_list['data']
@@ -50,3 +50,43 @@ def tag_CosineSim(tag):
 # Recommend_db(20,1)
 # get_freqtag()
 # tag_CosineSim("上身效果佳")
+
+def sim_user_good_recommend(login_flag,page,keyword):
+    recommend_list = {'error': 0, 'data': [], 'max_page': 1}
+
+    try:
+        sqlstr="select userid2,sum from sim_user_recommend_list where userid1='%d'"%(login_flag)
+        user_list=sql.select(sqlstr)
+        recommend_list['max_page'] = len(user_list['data'])
+        # print(user_list)
+        if(page<recommend_list['max_page']):
+            list=Recommend_db(user_list['data'][page]['userid2'] , 1 , keyword)
+        # print(list)
+        #
+    except Exception as e:
+        traceback.print_exc()
+
+    recommend_list['data']=list['data']
+    # print(user_list)
+    return recommend_list
+
+def get_goodlist_by_freqtag(page,tag):
+    recommend_list = {'error': 0, 'data': [], 'max_page': 1}
+    count = {'error': 1, 'data': 0}
+    try:
+        if(page==1):
+            sqlstr="select count(*) from recommend_good_tag_count where tag='%s' order by count desc"
+            count=sql.select(sqlstr)
+        if (count['error'] == 0):
+            count = count['data'][0]['count(*)']
+        else:
+            count = 0;
+
+
+        sqlstr="select goodlist.* from recommend_good_tag_count,goodlist where goodlist.id=recommend_good_tag_count.goodid and tag='%s' order by count desc limit %d,16)"%(tag,(page-1)*16)
+        list=sql.select(sqlstr)
+    except Exception as e:
+        traceback.print_exc()
+    recommend_list['data']=list['data']
+    recommend_list['max_page'] = int((count - 1) / 16) + 1
+    return recommend_list
