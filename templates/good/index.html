@@ -2,6 +2,7 @@
 {% extends '../layout.html' %}
 {% block css %}
     <link href="/static/css/good_index.css" rel="stylesheet">
+
 {% endblock %}
 {% block menus %}
     {% include './good_exlayout.html' %}
@@ -21,34 +22,20 @@
 
 {#    </script>#}
     <script src="/static/js/goodjs.js"></script>
-    <script>
-{#    tab的响应#}
+    <script src="/static/bootstrap-select-1.13.9/dist/js/bootstrap-select.js"></script>
+<script>
+$(window).on('load', function () {
+     $('.selectpicker').selectpicker();
 
-        $('#myTab1 li a').click(function (e) {
-            {#e.preventDefault();#}
-            {#console.log(this.href)#}
+});
+    // 获取值
+    function getVal() {
+        console.log($('#tags').val());
+    }
 
-            $(this).tab('show');
-
-            if(this.id=="a-tag"){
-                {#console.log(this.id)#}
-                document.getElementById('tab-keyword').classList.remove('active')
-                document.getElementById('tab-tag').classList.add('active')
-
-            }else if(this.id=="a-keyword"){
-                {#console.log(this.id)#}
-
-                 document.getElementById('tab-keyword').classList.add('active')
-                document.getElementById('tab-tag').classList.remove('active')
-            }
-
-        })
-
-        {#$(function () {#}
-		{#    $('#myTab li:eq(0) a').tab('show');#}
-        {##}
-
-
-
+    // 回显操作
+    // var str = '3,4,5,6';
+    // var arr = str.split(',');
+    // $('#fruits').selectpicker('val', arr);
     </script>
 {% endblock %}
