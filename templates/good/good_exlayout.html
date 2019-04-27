@@ -5,7 +5,7 @@
 
 
 <div class="line" >
-    <select id="tags" name="select" class="selectpicker show-tick form-control" multiple data-live-search="true" data-actions-box="true">
+    <select id="tags" name="tags"  class="selectpicker show-tick form-control" multiple data-live-search="true" data-actions-box="true">
         {% for tag in freq_tag %}
             <option value="{{forloop.counter}}">{{tag.tag}}({{tag.count}})</option>
         {% endfor %}

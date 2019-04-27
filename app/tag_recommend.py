@@ -37,7 +37,7 @@ def Recommend_db(userid,page,keyword):
     return recommend_list
 
 def get_freqtag():
-    sqlstr="select * from tagfreq order by count desc limit 0,13"
+    sqlstr="select * from tagfreq order by count desc limit 0,100"
     freqtag_list=sql.select(sqlstr)
     print(freqtag_list)
     return freqtag_list['data']
