@@ -7,12 +7,13 @@
 <div class="line" >
     <select id="tags" name="tags"  class="selectpicker show-tick form-control" multiple data-live-search="true" data-actions-box="true">
         {% for tag in freq_tag %}
-            <option value="{{forloop.counter}}">{{tag.tag}}({{tag.count}})</option>
+            <option value="{{tag.tag}}">{{tag.tag}}({{tag.count}})</option>
         {% endfor %}
 
     </select>
-
+    <button type="submit" class="btn btn-primary " style="width:185px;">Submit</button>
 </div>
+
 
   <div class="line">
         <a href="{{ goto }}keyword=女装">&ensp;女装 </a> /

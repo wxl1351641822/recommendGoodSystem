@@ -274,5 +274,9 @@ def good_tag(good):
     else:
         good.update({'tag1': "没有标签", 'tag2': "没有标签", 'tag3': "没有标签"})
 
+def gettag(request):
+    tags=request.POST.get('tag')
+    print(tags)
+    return HttpResponse('ok')
 
 
