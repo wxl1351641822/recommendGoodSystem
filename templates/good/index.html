@@ -33,9 +33,28 @@ $(window).on('load', function () {
         console.log($('#tags').val());
     }
 
-    function getTags() {
-    alert()
-	console.log('tags')
+$(".btn").on("click",function(){
+
+                var tags=$('#tags').val();
+
+                 $.ajax({
+                     url:'/gettag/',
+                     data:{'tag':tags.join(',')},
+                     type:'post',
+                     dataType: "json",
+                    success:function(e){
+                        console.log(e)
+                       alert($("#tags").val())
+                    },
+                    fail:function(e){
+                    alert(e)
+                    console.log('1')
+                    }
+                  });
+        });
+<!--    function getTags() {-->
+<!--    alert()-->
+<!--	console.log('tags')-->
 <!--	var html;-->
 <!--	$.ajax({     -->
 <!--		url : "localhost:8000",-->
@@ -51,7 +70,7 @@ $(window).on('load', function () {
 <!--		}-->
 <!--	});-->
 
-}
+<!--}-->
 
 
 

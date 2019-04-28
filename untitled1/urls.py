@@ -53,7 +53,7 @@ urlpatterns = [
 
 #     首页
 
-
+    path("gettag/",good.gettag),
 
 #     商品
     path('collect/',good.collect),
