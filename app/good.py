@@ -136,15 +136,15 @@ def good_detail(request):
         login_flag = 0;
     else:
         login_flag = int(id)
-        try:
-            sqlstr="select * from collect where goodid='%s' and userid='%d'"%(goodid,login_flag)
-            collect=sql.select(sqlstr)
-            # if len(collect['data'])<=0:
-            #     login_flag=-1;
-
-        except Exception as e:
-            print(e)
-            traceback.print_exc()
+        # try:
+        #     sqlstr="select * from collect where goodid='%s' and userid='%d'"%(goodid,login_flag)
+        #     collect=sql.select(sqlstr)
+        #     # if len(collect['data'])<=0:
+        #     #     login_flag=-1;
+        #
+        # except Exception as e:
+        #     print(e)
+        #     traceback.print_exc()
     if not goodid:
         return render(request, 'good/index.html')
     else:
@@ -173,7 +173,7 @@ def good_detail(request):
             sqlstr = "select * from gooddetaillist where gooddetaillist.id='%s'" % (goodid)
             good_detail = sql.select(sqlstr)
             print(good_detail)
-            sqlstr = "select goodcomments.id,name,avatarurl,comments,name from goodcomments,user where goodcomments.goodid='%s' and user.id=goodcomments.userid" % (goodid)
+            sqlstr = "select goodcomments.id,name,avatarurl,comments,name from goodcomments,user where goodcomments.goodid='%s' and user.id=goodcomments.userid order by id desc" % (goodid)
             good_comments = sql.select(sqlstr)
             print(good_comments)
         except Exception as e:
@@ -303,7 +303,12 @@ def submitComment(request):
     re = {'error': 0, 'data': ()}
     try:
         comment=request.POST.get('comment')
-        print(comment)
+
+        userid=request.POST.get('userid')
+        goodid = request.POST.get('goodid')
+        print(comment,userid,goodid)
+        sqlstr="INSERT INTO `goodcomments`( `userid`, `goodid`, `comments`) VALUES ('%d','%s','%s')"%(int(userid),goodid,comment)
+        re=sql.insert(sqlstr)
         response = HttpResponse(json.dumps(re))
     except Exception as e:
         re['error']=1

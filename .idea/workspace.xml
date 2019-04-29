@@ -2,17 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ace0bffe-eb24-4999-9895-d34347bfe3f8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/good/detail_exlayout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/untitled1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/untitled1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/11.html" beforeDir="false" afterPath="$PROJECT_DIR$/11.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/good.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/good.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/good/good_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/good/good_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/good/good_exlayout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/good/good_exlayout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/good/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/good/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/user_exlayout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/user_exlayout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled1/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/untitled1/urls.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,25 +34,27 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="html" value="803" />
-          <entry key="py" value="210" />
+          <entry key="html" value="921" />
+          <entry key="py" value="389" />
+          <entry key="txt" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="803" />
-          <entry key="Python" value="210" />
+          <entry key="HTML" value="921" />
+          <entry key="PLAIN_TEXT" value="18" />
+          <entry key="Python" value="389" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="html" value="8" />
+          <entry key="html" value="9" />
           <entry key="py" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="8" />
+          <entry key="HTML" value="9" />
           <entry key="Python" value="3" />
         </counts>
       </usages-collector>
@@ -67,24 +62,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/good.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="306" column="25" selection-start-line="306" selection-start-column="25" selection-end-line="306" selection-end-column="25" />
+            <state relative-caret-position="227">
+              <caret line="175" column="176" selection-start-line="175" selection-start-column="176" selection-end-line="175" selection-end-column="176" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
-                <marker date="1556529699262" expanded="true" signature="10349:10619" ph="..." />
+                <marker date="1556530514790" expanded="true" signature="10391:10661" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/user/user_exlayout.html">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/good/good_detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
+            <state relative-caret-position="322">
+              <caret line="214" lean-forward="true" selection-start-line="214" selection-end-line="214" />
             </state>
           </provider>
         </entry>
@@ -158,9 +153,9 @@
         <option value="$PROJECT_DIR$/templates/good/detail_exlayout.html" />
         <option value="$PROJECT_DIR$/templates/good/good_exlayout.html" />
         <option value="$PROJECT_DIR$/untitled1/urls.py" />
+        <option value="$PROJECT_DIR$/templates/user/user_exlayout.html" />
         <option value="$PROJECT_DIR$/templates/good/good_detail.html" />
         <option value="$PROJECT_DIR$/app/good.py" />
-        <option value="$PROJECT_DIR$/templates/user/user_exlayout.html" />
       </list>
     </option>
   </component>
@@ -481,7 +476,14 @@
       <option name="project" value="LOCAL" />
       <updated>1556380883433</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="改了detail页面的收藏">
+      <created>1556529852473</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1556529852473</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -497,12 +499,12 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18565683" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18565683" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.71648794" visible="true" weight="0.26062322" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.71648794" visible="true" weight="0.26062322" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -551,7 +553,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value=".idea" />
-    <option name="LAST_COMMIT_MESSAGE" value=".idea" />
+    <MESSAGE value="改了detail页面的收藏" />
+    <option name="LAST_COMMIT_MESSAGE" value="改了detail页面的收藏" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/templates/ts/index.html">
@@ -842,17 +845,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/good/good_detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="83" column="64" selection-start-line="83" selection-start-column="64" selection-end-line="83" selection-end-column="64" />
-          <folding>
-            <element signature="n#style#0;n#textarea#0;n#div#0;n#div#0;n#li#0;n#ul#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#li#0;n#ul#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/good/good_exlayout.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -877,21 +869,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/good.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="306" column="25" selection-start-line="306" selection-start-column="25" selection-end-line="306" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-            <marker date="1556529699262" expanded="true" signature="10349:10619" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/user/user_exlayout.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
           <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/good/good_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="214" lean-forward="true" selection-start-line="214" selection-end-line="214" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/good.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="175" column="176" selection-start-line="175" selection-start-column="176" selection-end-line="175" selection-end-column="176" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+            <marker date="1556530514790" expanded="true" signature="10391:10661" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

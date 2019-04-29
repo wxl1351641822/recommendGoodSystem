@@ -203,13 +203,19 @@
                 $.ajax({
                     url: '/submitComment/',
                     data: {
-                        'comment': comment
-
+                        'comment': comment,
+                        'userid':login_flag,
+                        'goodid':'{{ goodlist.0.id }}'
                     },
                     type: 'post',
                     dataType: 'json',
                     success: function (e) {
-                        console.log(e)
+                        if(e.error==0){
+                            location.reload();
+
+                        }else{
+                            alert("评论失败！")
+                        }
 
                     },
                     fail: function (e) {
