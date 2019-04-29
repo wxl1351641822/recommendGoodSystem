@@ -53,8 +53,8 @@ def collect(request):
 
         print(goto,page,max_page)
 
-        if goto=='good_detail':
-            goto="http://127.0.0.1:8000/good_detail/?goodid=%s"%(goodid)
+        # if goto=='good_detail':
+        #     goto="http://127.0.0.1:8000/good_detail/?goodid=%s"%(goodid)
 
     except Exception as e:
         re['error']=1
@@ -139,8 +139,8 @@ def good_detail(request):
         try:
             sqlstr="select * from collect where goodid='%s' and userid='%d'"%(goodid,login_flag)
             collect=sql.select(sqlstr)
-            if len(collect['data'])<=0:
-                login_flag=-1;
+            # if len(collect['data'])<=0:
+            #     login_flag=-1;
 
         except Exception as e:
             print(e)
@@ -153,7 +153,12 @@ def good_detail(request):
             # sqlstr="select * from goodlist where goodlist.id='%s'"%(goodid)
             # goodlist=sql.select(sqlstr)
             # print(goodlist)
-            sqlstr="select * from sim_good_recommend_list,goodlist where goodlist.id=goodid2 and goodid1='%s' order by sum desc limit 0,16"%(goodid)
+            if(not id):
+                sqlstr="select * from sim_good_recommend_list,goodlist where goodlist.id=goodid2 and goodid1='%s' order by sum desc limit 0,16"%(goodid)
+            else:
+                sqlstr = "select * from sim_good_recommend_list,goodlist left join collect on goodlist.id=collect.goodid and collect.userid='%d' where goodlist.id=goodid2 and goodid1='%s' order by sum desc limit 0,16" % (
+                    login_flag,goodid)
+
             goodlist=sql.select(sqlstr)
             for good in goodlist['data']:
                 good_tag(good)
@@ -174,7 +179,7 @@ def good_detail(request):
         except Exception as e:
             print(e)
             traceback.print_exc()
-        qq=render(request,'good/good_detail.html',{'goodlist':goodlist['data'],'good_detail':good_detail['data'],'good_comments':good_comments['data'],'login_flag':login_flag})
+        qq=render(request,'good/good_detail.html',{'goodlist':goodlist['data'],'good_detail':good_detail['data'],'good_comments':good_comments['data'],'goto':'/good_detail/?goodid='+goodid,'login_flag':login_flag,'taglist':good_detail_tag(goodid)})
         # str=qq.serialize()
         #
         #
@@ -261,7 +266,7 @@ def get_goodlist(id,login_flag,keyword,page,max_page,key,tag):
 
 
 def good_tag(good):
-    sqlstr = "select goodid,tag from recommend_good_tag_count where goodid='%s' and tag not in (select keyword from goodlist where recommend_good_tag_count.goodid=goodlist.id) order by tag desc limit 0,3" % (
+    sqlstr = "select goodid,tag from recommend_good_tag_count where goodid='%s' and tag not in (select keyword from goodlist where recommend_good_tag_count.goodid=goodlist.id) order by count desc limit 0,3" % (
     good['id'])
     taglist = sql.select(sqlstr)
     if (len(taglist['data']) >= 3):
@@ -274,9 +279,38 @@ def good_tag(good):
     else:
         good.update({'tag1': "没有标签", 'tag2': "没有标签", 'tag3': "没有标签"})
 
+def good_detail_tag(goodid):
+    sqlstr = "select tag,count from recommend_good_tag_count where goodid='%s' and tag not in (select keyword from goodlist where recommend_good_tag_count.goodid=goodlist.id) order by count desc" % (
+        goodid)
+    taglist = sql.select(sqlstr)
+    return taglist
+
 def gettag(request):
-    tags=request.POST.get('tag')
-    print(tags)
-    return HttpResponse('ok')
+    re = {'error': 0, 'data': ()}
+    try:
+        tags=request.POST.get('tag')
+        print(tags)
+        response = HttpResponse(json.dumps(re))
+    except Exception as e:
+        re['error']=1
+        re['data']='后台错误'
+        response = HttpResponse(json.dumps(re))
+        print(e)
+        traceback.print_exc()
+    return response
+
+def submitComment(request):
+    re = {'error': 0, 'data': ()}
+    try:
+        comment=request.POST.get('comment')
+        print(comment)
+        response = HttpResponse(json.dumps(re))
+    except Exception as e:
+        re['error']=1
+        re['data']='后台错误'
+        response = HttpResponse(json.dumps(re))
+        print(e)
+        traceback.print_exc()
+    return response
 
 

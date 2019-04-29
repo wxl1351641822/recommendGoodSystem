@@ -54,6 +54,7 @@ urlpatterns = [
 #     首页
 
     path("gettag/",good.gettag),
+    path("submitComment/",good.submitComment),
 
 #     商品
     path('collect/',good.collect),

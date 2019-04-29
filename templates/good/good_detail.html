@@ -60,7 +60,7 @@
 
 {% endblock %}
 {% block menus %}
-    {% include './good_exlayout.html' %}
+    {% include './detail_exlayout.html' %}
 {% endblock %}
 {% block content %}
 {#    {% include '../navbar_content.html' %}#}
@@ -81,7 +81,7 @@
                               {% if login_flag == 0 %}
                                     <a  class="text-right col-2" style="padding-right:0px;" href="/collect/?goodid={{ goodlist.0.id }}&del=0&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ goodlist.0.collect_num }}</a>
                               {% else %}
-                                  {% if login_flag == good.userid %}
+                                  {% if login_flag == goodlist.0.userid %}
                                       <a  class="text-right col-2" style="padding-right:0px;" href="/collect/?goodid={{ goodlist.0.id }}&del=1&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang_1.png" >&ensp;{{ goodlist.0.collect_num }}</a>
                                   {% else %}
                                       <a  class="text-right col-2" style="padding-right:0px;" href="/collect/?goodid={{ goodlist.0.id }}&del=0&goto={{ goto }}&page={{ page }}&max_page={{ max_page }}"><img class="icon" src="/static/img/shoucang.png" >&ensp;{{ goodlist.0.collect_num }}</a>
@@ -126,8 +126,19 @@
         <ul>
             <li class="comment-list">
                 <div class="form-group">
-                  <label for="comment">评论:</label>
-                  <textarea class="form-control" rows="5" id="text_comment"></textarea>
+
+                <div class="row">
+                    <input type="text" class="form-control"  id="text_comment" style="width:90%;">
+                    <button type="submit" class="btn btn-primary " id="submitComment" >评论</button>
+                </div>
+
+                     <div class="row">
+                         {% for tag in taglist.data %}
+                              <div class="col-1 text-center btn" onclick="onClickChooseTag('{{ tag.tag }}')" style="margin-top:10px;margin-left:15px;border-radius:50%;color:blue;border:1px solid blue;font-size:13px;padding-left:0;padding-right:0;">{{tag.tag}}({{ tag.count }})</div>
+                            {% endfor %}
+                          </div>
+
+
                 </div>
             </li>
             {% for comment in good_comments %}
@@ -181,7 +192,45 @@
                 document.getElementById('tab-detail').classList.remove('active')
             }
 
-        })
+        });
+        $("#submitComment").click(function(){
+            var comment=$('#text_comment').val()
+            console.log('{{ login_flag }}')
+            var login_flag='{{ login_flag }}'
+            if(login_flag=='0'){
+                alert("请登录！")
+            }else {
+                $.ajax({
+                    url: '/submitComment/',
+                    data: {
+                        'comment': comment
+
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (e) {
+                        console.log(e)
+
+                    },
+                    fail: function (e) {
+                        alert(e)
+
+                    }, complete: function (XMLHttpRequest, textStatus) {
+                        console.log('complete')
+                    },
+                    error: function (e) {
+                        console.log('error', e)
+                    }
+                });
+            }
+        });
+
+
+
+        function onClickChooseTag(tag){
+
+            $('#text_comment').val($('#text_comment').val()+' '+tag+' ')
+        }
 
         {#$(function () {#}
 		{#    $('#myTab li:eq(0) a').tab('show');#}

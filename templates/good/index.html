@@ -39,38 +39,23 @@ $(".btn").on("click",function(){
 
                  $.ajax({
                      url:'/gettag/',
-                     data:{'tag':tags.join(',')},
+                     data:{'tag':tags.join(','),
+
+                     },
                      type:'post',
-                     dataType: "json",
-                    success:function(e){
-                        console.log(e)
-                       alert($("#tags").val())
-                    },
+                     dataType: 'json',
+                     success:function(e){
+                         console.log(e)
+                         alert($("#tags").val())
+                     },
                     fail:function(e){
-                    alert(e)
-                    console.log('1')
-                    }
+                        alert(e)
+                        console.log('1')
+                    },complete: function(XMLHttpRequest, textStatus) { console.log('complete')},
+                    error: function(e){console.log('error',e)}
                   });
         });
-<!--    function getTags() {-->
-<!--    alert()-->
-<!--	console.log('tags')-->
-<!--	var html;-->
-<!--	$.ajax({     -->
-<!--		url : "localhost:8000",-->
-<!--		type : 'post',-->
-<!--		dataType : 'json',-->
-<!--		success : function(data) {-->
-<!--			html += "<option value = ''> - - 请选择 - - </option>";-->
-<!--			for (var i = 0; i < data.length; i++) {-->
-<!--				html += "<option value=" + data[i].letterCd+ ">"-->
-<!--				+ data[i].letterCd + "</option>";-->
-<!--			}-->
-<!--			$("#tags").html(html);-->
-<!--		}-->
-<!--	});-->
 
-<!--}-->
 
 
 
