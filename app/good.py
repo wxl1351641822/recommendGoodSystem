@@ -65,6 +65,29 @@ def collect(request):
     print(re)
     return redirect(goto)
 
+def search(request):
+    # 先去cookie中找凭证
+    print('search-get',request.GET)
+    id = request.COOKIES.get('userid')
+    # print(id)
+    login_flag = id;
+    page = request.GET.get('page')
+    # print(page)
+    keyword = request.GET.get('keyword')
+    tag=request.GET.get('tag')
+    max_page = request.GET.get('max_page')
+    search=request.GET.get('search')
+    goodlist, login_flag, count_lis, page, max_page = get_goodlist(id, login_flag, keyword, page, max_page, 3,tag,search)
+    goto = '/search/?search='+search+'&'
+    ugoto=goto
+    if keyword:
+        goto = goto + 'keyword=' + keyword+'&'
+    if tag:
+        goto = goto + 'tag=' + tag+'&'
+    return render(request, 'good/index.html',
+                  {'error': 0, 'goodlist': goodlist, 'login_flag': login_flag, 'count_lis': count_lis, 'page': page,'ugoto':ugoto,
+                   'max_page': max_page, 'goto': goto,'key':1,'freq_tag':tag_recommend.get_freqtag()})
+
 def freq(request):
     # 先去cookie中找凭证
     id = request.COOKIES.get('userid')
@@ -75,14 +98,16 @@ def freq(request):
     keyword = request.GET.get('keyword')
     tag=request.GET.get('tag')
     max_page = request.GET.get('max_page')
-
-    goodlist, login_flag, count_lis, page, max_page = get_goodlist(id, login_flag, keyword, page, max_page, 1,tag)
+    search = request.GET.get('search')
+    goodlist, login_flag, count_lis, page, max_page = get_goodlist(id, login_flag, keyword, page, max_page, 1,tag,search)
     goto = '/freq/?'
     ugoto=goto
     if keyword:
         goto = goto + 'keyword=' + keyword+'&'
     if tag:
         goto = goto + 'tag=' + tag+'&'
+    if search:
+        goto = ugoto + 'search=' + search+ '&'
     return render(request, 'good/index.html',
                   {'error': 0, 'goodlist': goodlist, 'login_flag': login_flag, 'count_lis': count_lis, 'page': page,'ugoto':ugoto,
                    'max_page': max_page, 'goto': goto,'key':1,'freq_tag':tag_recommend.get_freqtag()})
@@ -97,14 +122,16 @@ def sim_user(request):
     keyword = request.GET.get('keyword')
     tag = request.GET.get('tag')
     max_page = request.GET.get('max_page')
-
-    goodlist, login_flag, count_lis, page, max_page = get_goodlist(id, login_flag, keyword, page, max_page, 2,tag)
+    search = request.GET.get('search')
+    goodlist, login_flag, count_lis, page, max_page = get_goodlist(id, login_flag, keyword, page, max_page, 2,tag,search)
     goto='/sim_user/?'
     ugoto=goto
     if keyword:
         goto=ugoto+'keyword='+keyword+'&'
     if tag:
         goto = ugoto+'tag=' + tag+'&'
+    if search:
+        goto = ugoto + 'search=' + search+ '&'
     return render(request, 'good/index.html',
                   {'error': 0, 'goodlist': goodlist, 'login_flag': login_flag, 'count_lis': count_lis, 'page': page,'ugoto':ugoto,
                    'max_page': max_page, 'goto': goto, 'key': 2,'freq_tag':tag_recommend.get_freqtag()})
@@ -119,16 +146,18 @@ def index(request):#函数用于
     page = request.GET.get('page')
     # print(page)
     keyword=request.GET.get('keyword')
-
+    search = request.GET.get('search')
     max_page = request.GET.get('max_page')
     tag = request.GET.get('tag')
-    goodlist,login_flag,count_lis,page,max_page=get_goodlist(id,login_flag,keyword,page,max_page,0,tag)
+    goodlist,login_flag,count_lis,page,max_page=get_goodlist(id,login_flag,keyword,page,max_page,0,tag,search)
     ugoto='/index/?'
     goto=ugoto
     if  keyword:
         goto=ugoto+'keyword='+keyword+'&'
     if tag:
         goto = ugoto+'tag=' + tag+'&'
+    if search:
+        goto = ugoto + 'search=' + search+ '&'
     print(goto)
     return render(request, 'good/index.html',{'error':0,'goodlist':goodlist,'login_flag':login_flag,'count_lis':count_lis,'page':page,'max_page':max_page,'goto':goto,'ugoto':ugoto,'key':0,'freq_tag':tag_recommend.get_freqtag()})
 
@@ -201,7 +230,7 @@ def good_detail(request):
 
 
 
-def get_goodlist(id,login_flag,keyword,page,max_page,key,tag):
+def get_goodlist(id,login_flag,keyword,page,max_page,key,tag,search):
     if not page:
         page = 1;
         if not keyword:
@@ -214,17 +243,55 @@ def get_goodlist(id,login_flag,keyword,page,max_page,key,tag):
         else:
             count = 0;
         max_page = int((count - 1) / 16) + 1
-    if(not tag):
-        if((not id) or key==1):
 
+    if(tag):
+        if (not keyword):
+            keyword = 0
+        tag_list = tag.split(',')
+        message = tag_recommend.recommend_tag_good(tag_list, page, keyword)
+        if page==1:
+            max_page = message['max_page']
+    else:
+        if((not id) or key==1):
             if(key==0):
                 login_flag=0;
-            if(not keyword):
-                sqlstr = "select * from goodlist order by collect_num desc limit %d,16"%((page-1)*16)
+            if(not search):
+                if(not keyword):
+                    sqlstr = "select * from goodlist order by collect_num desc limit %d,16"%((int(page)-1)*16)
+                else:
+                    sqlstr = "select * from goodlist where keyword='%s' order by collect_num desc limit %d,16" % (
+                    keyword, (int(page) - 1) * 16)
+                message = sql.select(sqlstr)
             else:
-                sqlstr = "select * from goodlist where keyword='%s' order by collect_num desc limit %d,16" % (
-                keyword, (page - 1) * 16)
-            message = sql.select(sqlstr)
+                search.replace(' ','%')
+                search.replace(' ', '%')
+                search='%'+search+'%'
+                print(search)
+                if (not keyword):
+                    sqlstr = "select * from goodlist where title like '%s' or keyword like '%s' order by collect_num desc limit %d,16" % (search,search,(int(page) - 1) * 16)
+                    message = sql.select(sqlstr)
+                    slist = list(search)
+                    search = '%'.join(slist)
+                    sqlstr = "select * from goodlist where title like '%s' or keyword like '%s' order by collect_num desc limit %d,16" % (
+                    search, search, (int(page) - 1) * 16)
+                    message1 = sql.select(sqlstr)
+                else:
+                    sqlstr = "select * from goodlist where keyword='%s' and title like '%s' order by collect_num desc limit %d,16" % (
+                        keyword, search,(int(page) - 1) * 16)
+                    message = sql.select(sqlstr)
+                    slist = list(search)
+                    search = '%'.join(slist)
+                    sqlstr = "select * from goodlist where keyword='%s' and title like '%s' order by collect_num desc limit %d,16" % (
+                        keyword, search,(int(page) - 1) * 16)
+                    message1 = sql.select(sqlstr)
+                if(message['error']!=0):
+                    message=message
+                else:
+                    if(message1['error']==0):
+                        message['data']=message['data']+message1['data']
+
+                print(sqlstr)
+
         else:
             login_flag=int(id)
             if(not keyword):
@@ -235,13 +302,8 @@ def get_goodlist(id,login_flag,keyword,page,max_page,key,tag):
                  message = tag_recommend.Recommend_db(login_flag, page, keyword)
             if page==1:
                 max_page=message['max_page']
-    else:
-        if (not keyword):
-            keyword = 0
-        tag_list = tag.split(',')
-        message = tag_recommend.recommend_tag_good(tag_list, page, keyword)
-        if page==1:
-            max_page = message['max_page']
+
+
 
     page = int(page)
     max_page = int(max_page)

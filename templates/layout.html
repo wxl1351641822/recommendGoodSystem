@@ -83,10 +83,10 @@
                         document.getElementById('unlogin').classList.add('hide');
                   </script>
               {% endif %}
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
-            </form>
+            <div class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="search" placeholder="搜索" name="search" id="search_text">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="search">搜索</button>
+            </div>
           </div>
        </nav>
     </div>
@@ -133,13 +133,26 @@
 
             if(document.body.clientWidth>990){
                 document.getElementById("content").style.width=(document.body.clientWidth-200)+"px";
-
              }else{
                     document.getElementById("content").style.width=(document.body.clientWidth)+"px";
                 }
 
                 {#alert(document.body.clientWidth,document.getElementById("content").style.width)#}
         }
+        $("#search").on("click",function() {
+
+            var text = $('#search_text').val();
+            var goto = "{{ goto }}"
+            {#console.log(goto)#}
+            var index = goto.indexOf('search')
+            if (index == -1)
+                window.location.href = goto + "search=" + text
+            else {
+
+                goto = goto.substring(0, index + 7)
+                window.location.href = goto + text
+            }
+        });
         function ajax_login(){
             // alert('ajax')
             username=$('#username').val()

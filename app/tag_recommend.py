@@ -1,9 +1,10 @@
 from app import sql
 import traceback
-def Recommend_db(userid,page,keyword):
+def Recommend_db(userid,page,keyword,search):
     recommend_list={'error':0,'data':[],'max_page':1}
     count={'error':1,'data':0}
     try:
+        # if(not search):
         if(keyword==0):
             if (page == 1):
                 sqlstr = "select count(*) from goodlist  left join recommend_list on goodlist.id=recommend_list.goodid left join collect on goodlist.id=collect.goodid and collect.userid='%d' where recommend_list.userid='%d' order by recommend_list.sum desc" % (
