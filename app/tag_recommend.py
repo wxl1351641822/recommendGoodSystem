@@ -90,3 +90,47 @@ def get_goodlist_by_freqtag(page,tag):
     recommend_list['data']=list['data']
     recommend_list['max_page'] = int((count - 1) / 16) + 1
     return recommend_list
+
+def recommend_tag_good(tag_list,page,keyword):
+    k=0;
+    recommend_list = {'error': 0, 'data': [], 'max_page': 1}
+    count = {'error': 1, 'data': 0}
+    tagstr=''
+
+    for tag in tag_list:
+        k=1
+        tagstr=tagstr+" tag='"+tag+"' or"
+    print(tagstr[0:-3])
+    page=int(page)
+
+    if(k==1):
+        try:
+            if (keyword == 0):
+                if (page == 1):
+                    sqlstr = "select count(*) from recommend_good_tag_count where " + tagstr[0:-3] + " group by goodid ORDER BY sum(count/log(count+1)) desc"
+                    count = sql.select(sqlstr)
+                    print('count1', count)
+                sqlstr = "select goodlist.* from recommend_good_tag_count,goodlist where goodlist.id=recommend_good_tag_count.goodid and (" + tagstr[0:-3] + ") group by goodid ORDER BY sum(count/log(count+1)) desc limit %d,16" % ((page-1)*16)
+            else:
+                if (page == 1):
+                        sqlstr = "select count(*) from recommend_good_tag_count,goodlist where goodlist.id=recommend_good_tag_count.goodid and (" + tagstr[0:-3] + ") and keyword='%s' group by goodid ORDER BY sum(count/log(count+1)) desc"%(keyword)
+                        count = sql.select(sqlstr)
+                        print('count2', count)
+                sqlstr = "select goodlist.* from recommend_good_tag_count,goodlist where goodlist.id=recommend_good_tag_count.goodid and (" + tagstr[0:-3] + ") and keyword='%s' group by goodid ORDER BY sum(count/log(count+1)) desc limit %d,16" % (
+                                         keyword,(page - 1) * 16)
+
+            list = sql.select(sqlstr)
+
+            recommend_list['error'] = list['error']
+            recommend_list['data'] = list['data']
+            print('count',count)
+            if (count['error'] == 0):
+                count = count['data'][0]['count(*)']
+            else:
+                count = 0;
+            recommend_list['max_page'] = int((count - 1) / 16) + 1
+            print(recommend_list['max_page'])
+        except Exception as e:
+            traceback.print_exc()
+        # print(recommend_list)
+    return recommend_list

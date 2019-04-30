@@ -33,27 +33,38 @@ $(window).on('load', function () {
         console.log($('#tags').val());
     }
 
-$(".btn").on("click",function(){
+    $("#shaixuanSubmit").on("click",function(){
 
-                var tags=$('#tags').val();
+        var tags=$('#tags').val();
+        var goto="{{ goto }}"
+        {#console.log(goto)#}
+        var index=goto.indexOf('tag')
+        if(index==-1)
+            window.location.href=goto+"tag="+tags.join(',')
+        else{
 
-                 $.ajax({
-                     url:'/gettag/',
-                     data:{'tag':tags.join(','),
+            goto=goto.substring(0,index+4)
+            window.location.href=goto+tags.join(',')
+        }
 
-                     },
-                     type:'post',
-                     dataType: 'json',
-                     success:function(e){
-                         console.log(e)
-                         alert($("#tags").val())
-                     },
-                    fail:function(e){
-                        alert(e)
-                        console.log('1')
-                    },complete: function(XMLHttpRequest, textStatus) { console.log('complete')},
-                    error: function(e){console.log('error',e)}
-                  });
+                {#location.reload()#}
+                 {#$.ajax({#}
+                 {#    url:'{{ goto }}',#}
+                 {#    data:{#}
+                 {#        'tag':tags.join(','),#}
+                 {##}
+                 {#    },#}
+                 {#    type:'get',#}
+                 {#    success:function(e){#}
+                 {#        console.log(e)#}
+                 {#        alert($("#tags").val())#}
+                 {#    },#}
+                 {#   fail:function(e){#}
+                 {#       alert(e)#}
+                 {#       console.log('1')#}
+                 {#   },complete: function(XMLHttpRequest, textStatus) { console.log('complete')},#}
+                 {#   error: function(e){console.log('error',e)}#}
+                 {# });#}
         });
 
 
